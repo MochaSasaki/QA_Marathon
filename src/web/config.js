@@ -1,5 +1,6 @@
 const config = {
-  apiUrl: 'http://localhost:3000'
+  // Node.jsアプリケーションがホストマシンの3524番ポートで動作するように設定したため、apiUrlのポート番号も3524に変更。by mocha
+  apiUrl: 'http://localhost:3524'
 };
 
 export default config;
