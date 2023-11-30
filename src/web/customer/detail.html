@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>顧客詳細</title>
+    <!-- Bootstrap CSSの読み込み -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+
+<body>
+    <div class="container mt-5">
+        <h1 class="mb-4">顧客詳細</h1>
+        <div class="table table-striped" id="customer-details">
+            <!-- 顧客の詳細情報はここに挿入されます -->
+        </div>
+    </div>
+
+    <script type="module">
+        // ExpressサーバのAPIエンドポイントのURL
+        import config from "../config.js";
+
+        // URLからcustomer_idを取得
+        const urlParams = new URLSearchParams(window.location.search);
+        const customerId = urlParams.get('customer_id');
+
+        // Fetchで詳細データを取得
+        fetch(`${config.apiUrl}/customer/detail.html?customer_id=${customerId}`)
+            .then((response) => response.json())
+            .then((customer) => {
+                const detailsContainer = document.getElementById("customer-details");
+
+                // 詳細データを表形式で表示
+                for (const [key, value] of Object.entries(customer.customer)) {
+                    const row = document.createElement("tr");
+                    const keyCell = document.createElement("td");
+                    const valueCell = document.createElement("td");
+
+                    // 列名を日本語に変更
+                    const japaneseColumnName = mapToJapanese(key);
+                    keyCell.textContent = japaneseColumnName;
+                    valueCell.textContent = value;
+
+                    row.appendChild(keyCell);
+                    row.appendChild(valueCell);
+                    detailsContainer.appendChild(row);
+                }
+            })
+            .catch((error) => console.error(error));
+        // 列名を日本語に変換する関数
+        function mapToJapanese(columnName) {
+            const columnMap = {
+                customer_id: '顧客ID',
+                company_name: '会社名',
+                industry: '業種',
+                contact: '連絡先',
+                location: '所在地',
+                created_date: '登録日',
+                updated_date: '更新日'
+            };
+            return columnMap[columnName] || columnName;
+        }
+    </script>
+
+    <!-- BootstrapのJavaScriptと依存関係のリンク -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html>

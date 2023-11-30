@@ -22,7 +22,7 @@ app.listen(port, () => {
 });
 
 // GETエンドポイント: 顧客一覧を取得
-app.get("/customers", async (req, res) => {
+app.get("/customer/list", async (req, res) => {
   try {
     const customerData = await pool.query("SELECT * FROM customers");
     res.send(customerData.rows);
@@ -49,6 +49,24 @@ app.post("/add-customer", async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ success: false, error: err.message }); // Changed the error message to include the actual error
+  }
+});
+
+// GETエンドポイント: 顧客詳細を取得
+app.get("/customer/detail.html", async (req, res) => {
+  try {
+    const customerId = req.query.customer_id;
+    const customerDetail = await pool.query("SELECT * FROM customers WHERE customer_id = $1", [customerId]);
+
+    if (customerDetail.rows.length === 0) {
+      res.status(404).json({ success: false, message: "Customer not found" });
+    } else {
+      // 顧客詳細をJSON形式でクライアントに返す
+      res.json({ success: true, customer: customerDetail.rows[0] });
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, error: err.message });
   }
 });
 
