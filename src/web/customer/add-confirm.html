@@ -1,22 +1,83 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>案件情報入力</title>
+    <title>顧客登録確認</title>
     <!-- Bootstrap CSSの読み込み -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 </head>
+
 <body>
-    <div class="container mt-5">
-        <!-- ここにHTMLを書く -->
+    <div class="container mt-5" id="customer-form">
+        <h1>顧客登録確認</h1>
+        <p>以下の内容で顧客を登録しますか？</p>
+        <div id="confirmation">
+            <p id="companyName-display">会社名: </p>
+            <p id="industry-display">業種: </p>
+            <p id="contact-display">連絡先: </p>
+            <p id="location-display">所在地: </p>
+        </div>
+        <button type="button" class="btn btn-primary" id="confirmBtn">登録</button>
+        <a href="./add.html" class="btn btn-secondary">キャンセル</a>
     </div>
+
     <script type="module">
-        <!-- ここにJSを書く -->
+        import config from '../config.js';
+
+        // ローカルストレージからデータを取得して表示する関数
+        function showConfirmation() {
+            // ローカルストレージから顧客情報を取得
+            const data = JSON.parse(localStorage.getItem('customerData'));
+
+            // 確認画面に表示
+            document.getElementById('companyName-display').innerText += data.companyName;
+            document.getElementById('industry-display').innerText += data.industry;
+            document.getElementById('contact-display').innerText += data.contact;
+            document.getElementById('location-display').innerText += data.location;
+
+            return data; // 追加：関数からデータを返す
+        }
+        // ページ読み込み時に確認画面を表示
+        document.addEventListener('DOMContentLoaded', function () {
+            const data = showConfirmation(); // 修正：関数を呼び出してデータを取得
+            // OKボタンクリック時の処理
+            document.getElementById('confirmBtn').addEventListener('click', function () {
+                // データをサーバーに送信する処理を追加
+                const formData = {
+                    companyName: data.companyName,
+                    industry: data.industry,
+                    contact: data.contact,
+                    location: data.location
+                };
+
+                fetch(config.apiUrl + '/add-customer', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                }).then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            alert('顧客情報が正常に保存されました。');
+                            // ローカルストレージのデータをクリア
+                            localStorage.removeItem('customerData');
+                            // ページを add.html に遷移
+                            window.location.href = './add.html';
+                        } else {
+                            alert('保存に失敗しました。');
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
+            });
+        });
     </script>
     <!-- BootstrapのJavaScriptの読み込み -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>
+
 </html>
