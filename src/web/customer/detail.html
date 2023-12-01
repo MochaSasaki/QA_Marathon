@@ -1,20 +1,21 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
 
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>顧客詳細</title>
+    <title>［顧客］詳細表示</title>
     <!-- Bootstrap CSSの読み込み -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 </head>
 
 <body>
     <div class="container mt-5">
-        <h1 class="mb-4">顧客詳細</h1>
+        <h1 class="mb-4">［顧客］詳細表示</h1>
         <div class="table table-striped" id="customer-details">
             <!-- 顧客の詳細情報はここに挿入されます -->
         </div>
+        <button class="btn btn-danger" id="deleteCustomerBtn">顧客を削除</button>
     </div>
 
     <script type="module">
@@ -61,6 +62,33 @@
             };
             return columnMap[columnName] || columnName;
         }
+        // 顧客削除
+        window.handleDeleteCustomer = function () {
+            // 削除していいか確認
+            const confirmation = confirm("顧客を削除してもよろしいですか？");
+
+            if (confirmation) {
+                // Fetchで削除リクエストを送信
+                fetch(`${config.apiUrl}/customer/delete?customer_id=${customerId}`, {
+                    method: 'DELETE',
+                })
+                    .then((response) => response.json())
+                    .then((data) => {
+                        // 削除が成功した場合の処理
+                        alert("顧客が削除されました");
+                        // 顧客一覧画面にリダイレクト
+                        window.location.href = './list.html';
+                    })
+                        // 削除が失敗した場合の処理
+                        console.error(error);
+                        // 失敗時は通常通りのエラーメッセージ表示
+                        alert("顧客の削除に失敗しました");
+            }
+            console.log("handleDeleteCustomer function called");
+        };
+
+        // ボタンにイベントリスナーを追加
+        document.getElementById("deleteCustomerBtn").addEventListener("click", handleDeleteCustomer);
     </script>
 
     <!-- BootstrapのJavaScriptと依存関係のリンク -->

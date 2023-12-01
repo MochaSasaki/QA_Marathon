@@ -70,5 +70,23 @@ app.get("/customer/detail.html", async (req, res) => {
   }
 });
 
+// 顧客削除のエンドポイント
+app.delete("/customer/delete", async (req, res) => {
+  try {
+    const customerId = req.query.customer_id;
+    // 顧客を削除するクエリを実行
+    const deleteResult = await pool.query("DELETE FROM customers WHERE customer_id = $1", [customerId]);
+
+    if (deleteResult.rowCount === 0) {
+      res.status(404).json({ success: false, message: "Customer not found" });
+    } else {
+      res.json({ success: true, message: "Customer deleted successfully" });
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
 // 静的ファイルの提供
 app.use(express.static("public"));
