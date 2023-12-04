@@ -12,11 +12,36 @@
 <body>
     <div class="container mt-5">
         <h1 class="mb-4">［顧客］詳細表示</h1>
+        <section>
+            <h2 class="mb-4">登録情報</h2>
         <div class="table table-striped" id="customer-details">
             <!-- 顧客の詳細情報はここに挿入されます -->
         </div>
         <button class="btn btn-danger" id="deleteCustomerBtn">顧客を削除</button>
+    </section><br><br>
+        <form id="editCustomerForm">
+            <h2 class="mb-4">編集</h2>
+            <div class="form-group">
+                <label for="companyName">会社名</label>
+                <input type="text" class="form-control" id="companyName" name="companyName" required>
+            </div>
+            <div class="form-group">
+                <label for="industry">業種</label>
+                <input type="text" class="form-control" id="industry" name="industry" required>
+            </div>
+            <div class="form-group">
+                <label for="contact">連絡先</label>
+                <input type="text" class="form-control" id="contact" name="contact" required>
+            </div>
+            <div class="form-group">
+                <label for="location">所在地</label>
+                <input type="text" class="form-control" id="location" name="location" required>
+            </div>
+            <!-- <button type="button" class="btn btn-primary" id="updateCustomerBtn">顧客情報を更新</button> -->
+            <button type="button" class="btn btn-primary mb-2" id="updateCustomerBtn">顧客情報を更新</button>
+        </form>
     </div>
+
 
     <script type="module">
         // ExpressサーバのAPIエンドポイントのURL
@@ -62,6 +87,39 @@
             };
             return columnMap[columnName] || columnName;
         }
+
+        // 顧客更新
+        document.getElementById("updateCustomerBtn").addEventListener("click", function () {
+            const updateData = {
+                companyName: document.getElementById("companyName").value,
+                industry: document.getElementById("industry").value,
+                contact: document.getElementById("contact").value,
+                location: document.getElementById("location").value,
+            };
+
+            // Fetchで更新リクエストを送信
+            fetch(`${config.apiUrl}/customer/update?customer_id=${customerId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(updateData),
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    // 更新が成功した場合の処理
+                    alert("顧客情報が更新されました");
+                    // 顧客一覧画面にリダイレクト
+                    window.location.href = './list.html';
+                })
+                .catch((error) => {
+                    // 更新が失敗した場合の処理
+                    console.error(error);
+                    // 失敗時は通常通りのエラーメッセージ表示
+                    alert("顧客情報の更新に失敗しました");
+                });
+        });
+
         // 顧客削除
         window.handleDeleteCustomer = function () {
             // 削除していいか確認
@@ -79,10 +137,10 @@
                         // 顧客一覧画面にリダイレクト
                         window.location.href = './list.html';
                     })
-                        // 削除が失敗した場合の処理
-                        console.error(error);
-                        // 失敗時は通常通りのエラーメッセージ表示
-                        alert("顧客の削除に失敗しました");
+                // 削除が失敗した場合の処理
+                console.error(error);
+                // 失敗時は通常通りのエラーメッセージ表示
+                alert("顧客の削除に失敗しました");
             }
             console.log("handleDeleteCustomer function called");
         };

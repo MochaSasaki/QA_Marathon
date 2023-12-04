@@ -70,6 +70,28 @@ app.get("/customer/detail.html", async (req, res) => {
   }
 });
 
+// PUTエンドポイント: 顧客情報を更新
+app.put("/customer/update", async (req, res) => {
+  try {
+    const customerId = req.query.customer_id;
+    const { companyName, industry, contact, location } = req.body;
+
+    const updateResult = await pool.query(
+      "UPDATE customers SET company_name = $1, industry = $2, contact = $3, location = $4 WHERE customer_id = $5 RETURNING *",
+      [companyName, industry, contact, location, customerId]
+    );
+
+    if (updateResult.rows.length === 0) {
+      res.status(404).json({ success: false, message: "Customer not found" });
+    } else {
+      res.json({ success: true, customer: updateResult.rows[0] });
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
 // 顧客削除のエンドポイント
 app.delete("/customer/delete", async (req, res) => {
   try {
