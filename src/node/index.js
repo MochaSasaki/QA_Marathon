@@ -10,10 +10,10 @@ app.use(cors());
 
 const { Pool } = require("pg");
 const pool = new Pool({
-  user: "user_3524", // PostgreSQLのユーザー名に置き換えてください
-  host: "db", // Docker環境内で動作させる場合、PostgreSQLデータベースへの接続ホストは データベースサービスの名前のため、localhostからdbの変更。by mocha
-  database: "crm_3524", // PostgreSQLのデータベース名に置き換えてください
-  password: "pass_3524", // PostgreSQLのパスワードに置き換えてください
+  user: "user_moka_sasaki", // PostgreSQLのユーザー名に置き換えてください
+  host: "localhost",
+  database: "db_moka_sasaki", // PostgreSQLのデータベース名に置き換えてください
+  password: "pass", // PostgreSQLのパスワードに置き換えてください
   port: 5432,
 });
 
@@ -38,7 +38,7 @@ app.use(express.json());
 // POSTエンドポイント: 顧客を追加
 app.post("/add-customer", async (req, res) => {
   try {
-    // Expressアプリケーションのログを確認できるよう,ChatGPTにいわれた一行を追加 by mocha    
+    // Expressアプリケーションのログを確認できるよう,ChatGPTにいわれた一行を追加 by mocha
     console.log("Received POST request to /add-customer"); // Uncommented this line
     const { companyName, industry, contact, location } = req.body;
     const newCustomer = await pool.query(
@@ -110,5 +110,7 @@ app.delete("/customer/delete", async (req, res) => {
   }
 });
 
-// 静的ファイルの提供
-app.use(express.static("public"));
+// customer,case,negotiationディレクトリの静的ファイルを提供
+app.use(express.static("/usr/share/nginx/html/moka_sasaki/customer"));
+app.use(express.static("/usr/share/nginx/html/moka_sasaki/case"));
+app.use(express.static("/usr/share/nginx/html/moka_sasaki/negotiation"));
