@@ -1,6 +1,6 @@
 const config = {
   apiUrl: '/api_moka_sasaki',
-  baseUrl: 'moka_sasaki'
+  baseUrl: ''
 };
 
 export default config;
