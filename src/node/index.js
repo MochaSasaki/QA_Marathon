@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-app.use(express.urlencoded({ extended: true }));
+const path = require('path');
 
 // 指定ポート番号3524　by mocha
 const port = 3524;
@@ -110,7 +110,5 @@ app.delete("/customer/delete", async (req, res) => {
   }
 });
 
-// customer,case,negotiationディレクトリの静的ファイルを提供
-app.use(express.static("/usr/share/nginx/html/moka_sasaki/customer"));
-app.use(express.static("/usr/share/nginx/html/moka_sasaki/case"));
-app.use(express.static("/usr/share/nginx/html/moka_sasaki/negotiation"));
+// 静的ファイルを提供
+app.use(express.static("app/moka_sasaki/src/web"));
