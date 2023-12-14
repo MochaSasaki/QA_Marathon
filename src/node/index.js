@@ -111,4 +111,4 @@ app.delete("/customer/delete", async (req, res) => {
 });
 
 // 静的ファイルを提供
-app.use(express.static("app/moka_sasaki/src/web"));
+app.use(express.static("usr/share/nginx/html/moka_sasaki"));
