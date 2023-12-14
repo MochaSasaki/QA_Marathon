@@ -4,66 +4,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>［顧客］新規追加</title>
-    <!-- Bootstrap CSSの読み込み -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-</head>
-
-<body>
-    <div class="container mt-5">
-        <h1 class="mb-4">［顧客］新規追加</h1>
-        <h2 class="mb-4">顧客情報を入力してください</h2>
-        <form id="customer-form">
-            <div class="form-group">
-                <label for="companyName">会社名:</label>
-                <input type="text" class="form-control" id="companyName" name="companyName" required>
-            </div>
-            <div class="form-group">
-                <label for="industry">業種:</label>
-                <input type="text" class="form-control" id="industry" name="industry" required>
-            </div>
-            <div class="form-group">
-                <label for="contact">連絡先:</label>
-                <input type="text" class="form-control" id="contact" name="contact" required>
-            </div>
-            <div class="form-group">
-                <label for="location">所在地:</label>
-                <input type="text" class="form-control" id="location" name="location" required>
-            </div>
-            <a href="/customer/add-confirm.html"><button class="btn btn-primary">確認</button></a>
-        </form>
-    </div>
-    <script type="module">
-        import config from '../config.js';
-
-        document.getElementById('customer-form').addEventListener('submit', function (e) {
-            e.preventDefault();
-            const formData = new FormData(this);
-            let object = {};
-            formData.forEach(function (value, key) {
-                object[key] = value;
-            });
-            let json = JSON.stringify(object);
-            // データをローカルストレージに保存
-            localStorage.setItem('customerData', json);
-            window.location.href = '/customer/add-confirm.html'; // 確認画面に遷移
-        });
-    </script>
-    <!-- BootstrapのJavaScriptの読み込み -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-</body>
-
-</html>
-moka_sasaki@ip-172-31-45-253:/app/moka_sasaki/src/web/customer$ ^C
-moka_sasaki@ip-172-31-45-253:/app/moka_sasaki/src/web/customer$ cat add-confirm.html
-<!DOCTYPE html>
-<html lang="ja">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>［顧客］追加確認</title>
     <!-- Bootstrap CSSの読み込み -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
@@ -112,7 +52,7 @@ moka_sasaki@ip-172-31-45-253:/app/moka_sasaki/src/web/customer$ cat add-confirm.
                     location: data.location
                 };
 
-                fetch(config.apiUrl + '/add-customer', {
+                fetch('/add-customer', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
