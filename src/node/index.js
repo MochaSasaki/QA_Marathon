@@ -1,11 +1,6 @@
 const express = require("express");
 const app = express();
 const path = require('path');
-<<<<<<< HEAD:src/web/index.js
-const prodConfig = require('./config');
-=======
-const prodConfig = require('../web/prod_config');
->>>>>>> 45767eb7c6282299706fb5344f99e554df2b29ef:src/node/index.js
 
 // 指定ポート番号3524　by mocha
 const port = 3524;
