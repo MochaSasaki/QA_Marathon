@@ -40,6 +40,9 @@ lib-cov
 coverage
 *.lcov
 
+# .index.js.swp
+src/node/.index.js.swp
+
 # nyc test coverage
 .nyc_output
 
