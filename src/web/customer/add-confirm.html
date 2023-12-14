@@ -34,7 +34,7 @@
         </form>
     </div>
     <script type="module">
-        import config from '../prod_config.js';
+        import config from '../config.js';
 
         document.getElementById('customer-form').addEventListener('submit', function (e) {
             e.preventDefault();
@@ -84,7 +84,7 @@ moka_sasaki@ip-172-31-45-253:/app/moka_sasaki/src/web/customer$ cat add-confirm.
     </div>
 
     <script type="module">
-        import config from '../prod_config.js';
+        import config from '../config.js';
 
         // ローカルストレージからデータを取得して表示する関数
         function showConfirmation() {

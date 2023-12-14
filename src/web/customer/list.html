@@ -28,7 +28,7 @@
 
   <script type="module">
     // ExpressサーバのAPIエンドポイントのURL
-    import config from "../prod_config.js";
+    import config from "../config.js";
 
     fetch(`${config.apiUrl}/customer/list`)
       .then((response) => response.json())

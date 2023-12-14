@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 const path = require('path');
-const prodConfig = require('./prod_config');
+const prodConfig = require('./config');
 
 // 指定ポート番号3524　by mocha
 const port = 3524;
