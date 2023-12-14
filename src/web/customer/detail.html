@@ -52,7 +52,7 @@
         const customerId = urlParams.get('customer_id');
 
         // Fetchで詳細データを取得
-        fetch(`/customer/detail.html?customer_id=${customerId}`)
+        fetch(`${config.apiUrl}config.apiUrl + /customer/detail.html?customer_id=${customerId}`)
             .then((response) => response.json())
             .then((customer) => {
                 const detailsContainer = document.getElementById("customer-details");
@@ -127,7 +127,7 @@
 
             if (confirmation) {
                 // Fetchで削除リクエストを送信
-                fetch(`/customer/delete?customer_id=${customerId}`, {
+                fetch(`${config.apiUrl}/customer/delete?customer_id=${customerId}`, {
                     method: 'DELETE',
                 })
                     .then((response) => response.json())

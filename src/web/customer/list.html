@@ -30,7 +30,7 @@
     // ExpressサーバのAPIエンドポイントのURL
     import config from "../config.js";
 
-    fetch(`/customer/list`)
+    fetch(`${config.apiUrl}/customer/list`)
       .then((response) => response.json())
       .then((data) => {
         const list = document.getElementById("customer-list");
