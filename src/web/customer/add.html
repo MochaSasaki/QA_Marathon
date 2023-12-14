@@ -30,7 +30,7 @@
                 <label for="location">所在地:</label>
                 <input type="text" class="form-control" id="location" name="location" required>
             </div>
-            <a href="/customer/add-confirm.html"><button class="btn btn-primary">確認</button></a>
+            <a href="./add-confirm.html"><button class="btn btn-primary">確認</button></a>
         </form>
     </div>
     <script type="module">
@@ -46,7 +46,7 @@
             let json = JSON.stringify(object);
             // データをローカルストレージに保存
             localStorage.setItem('customerData', json);
-            window.location.href = '/customer/add-confirm.html'; // 確認画面に遷移
+            window.location.href = './add-confirm.html'; // 確認画面に遷移
         });
     </script>
     <!-- BootstrapのJavaScriptの読み込み -->
