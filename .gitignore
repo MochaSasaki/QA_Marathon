@@ -40,6 +40,9 @@ lib-cov
 coverage
 *.lcov
 
+# .index.js.swp
+src/node/.index.js.swp
+
 # nyc test coverage
 .nyc_output
 
@@ -145,3 +148,6 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+# not ignore src/web/prod_config.js
+!src/web/prod_config.js
