@@ -112,4 +112,3 @@ app.delete("/customer/delete", async (req, res) => {
 
 // 静的ファイルを提供"静的ファイルがあるディレクトリ名"
 app.use(express.static("public"));
-
