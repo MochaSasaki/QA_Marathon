@@ -52,7 +52,7 @@
         const customerId = urlParams.get('customer_id');
 
         // Fetchで詳細データを取得
-        fetch(`${config.apiUrl}config.apiUrl + /customer/detail.html?customer_id=${customerId}`)
+        fetch(`${config.apiUrl}/customer/detail.html?customer_id=${customerId}`)
             .then((response) => response.json())
             .then((customer) => {
                 const detailsContainer = document.getElementById("customer-details");
