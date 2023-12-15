@@ -110,7 +110,7 @@ app.delete("/customer/delete", async (req, res) => {
   }
 });
 
-// 静的ファイルを提供
+// 静的ファイルを提供"静的ファイルがあるディレクトリ名"
 app.use(express.static("public"));
 // app.use(express.static("/usr/share/nginx/html/moka_sasaki/customer"));
 // app.use(express.static("/usr/share/nginx/html/moka_sasaki/case"));
