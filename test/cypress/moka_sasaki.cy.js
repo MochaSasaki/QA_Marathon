@@ -18,7 +18,6 @@ describe('顧客情報入力フォームのテスト', () => {
 
     // 確認ボタンをクリック
     cy.get('button.btn-primary').click();
-
     // 確認画面に遷移することを確認
     cy.url().should('include', '/add-confirm.html');
 
