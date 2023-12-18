@@ -30,7 +30,6 @@ describe('顧客情報入力フォームのテスト', () => {
       expect(alertText).to.equal('顧客情報が正常に保存されました。');
     // フォームの送信
  //   cy.get('#customer-form').submit();
-
  //   cy.get('@alertStub').should('have.been.calledOnceWith', '顧客情報が正常に保存されました。');
 
     // フォームがリセットされたことを確認
