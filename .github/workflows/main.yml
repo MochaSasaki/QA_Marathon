@@ -21,8 +21,7 @@ jobs:
           SSH_KEY: ${{ secrets.DEV_SSHE_SSH_KEY }}
         run: |
           # Run tests on Staging environment
-          cd /ci
-          npx cypress run --browser chrome --spec cypress/e2e/moka_sasaki.*
+          npx cypress run --browser chrome --spec /ci/cypress/e2e/moka_sasaki.*
 
       - name: Deploy to Production
         if: success() # Only deploy to Production if the previous steps were successful
