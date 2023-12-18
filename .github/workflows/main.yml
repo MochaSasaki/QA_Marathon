@@ -1,0 +1,36 @@
+name: CI/CD Workflow
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  staging:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Run Tests on Staging
+        with:
+          SSH_HOST: ${{ secrets.DEV_SSH_HOST }}
+          SSH_PORT: ${{ secrets.DEV_SSH_PORT }}
+          SSH_USER: ${{ secrets.DEV_SSH_USER }}
+          SSH_KEY: ${{ secrets.DEV_SSHE_SSH_KEY }}
+        run: |
+          # Run tests on Staging environment
+          cd /ci
+          npx cypress run --browser chrome --spec cypress/e2e/moka_sasaki.* 
+
+      - name: Deploy to Production
+        if: success() # Only deploy to Production if the previous steps were successful
+        with:
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_PORT: ${{ secrets.SSH_PORT }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_KEY: ${{ secrets.SSHE_SSH_KEY }}
+        run: |
+          # Deploy to Production environment using /app/deploy.sh
+          bash /app/deploy.sh moka_sasaki
