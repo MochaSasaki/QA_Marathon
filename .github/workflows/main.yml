@@ -14,8 +14,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Run Tests on Staging
-        uses: actions/checkout@v2
-        with:
+        env:
           SSH_HOST: ${{ secrets.DEV_SSH_HOST }}
           SSH_PORT: ${{ secrets.DEV_SSH_PORT }}
           SSH_USER: ${{ secrets.DEV_SSH_USER }}
@@ -23,11 +22,11 @@ jobs:
         run: |
           # Run tests on Staging environment
           cd /ci
-          npx cypress run --browser chrome --spec cypress/e2e/moka_sasaki.* 
+          npx cypress run --browser chrome --spec cypress/e2e/moka_sasaki.*
 
       - name: Deploy to Production
         if: success() # Only deploy to Production if the previous steps were successful
-        with:
+        env:
           SSH_HOST: ${{ secrets.SSH_HOST }}
           SSH_PORT: ${{ secrets.SSH_PORT }}
           SSH_USER: ${{ secrets.SSH_USER }}
