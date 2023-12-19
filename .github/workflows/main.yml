@@ -21,7 +21,7 @@ jobs:
         run: npm install
 
       - name: Set Working Directory
-        run: cd /app/moka_sasaki
+        run: cd /app/moka_sasaki && ls -a
 
       - name: Cypress run
         env:
