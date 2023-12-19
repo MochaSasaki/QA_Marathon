@@ -9,9 +9,6 @@ jobs:
   test-standing:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
       - name: Test at Standing
         id: test-standing
         uses: invi5H/ssh-action@v1
@@ -35,10 +32,4 @@ jobs:
           SSH_PORT: ${{ secrets.SSH_PORT }}
           SSH_USER: ${{ secrets.SSH_USER }}
           SSH_KEY: ${{ secrets.SSHE_SSH_KEY }}
-      - run: |
-          # スクリプトのパスを設定
-          SCRIPT_PATH="/app/deploy.sh"
-          # ユーザー名を設定
-          USER_NAME="moka_sasaki"
-          # スクリプトをリモートホストで実行
-          ssh ${{ steps.deploy-production.outputs.SERVER }} bash $SCRIPT_PATH $USER_NAME
+      - run: ssh ${{ steps.deploy-production.outputs.SERVER }} bash /app/deploy.sh moka_sasaki
