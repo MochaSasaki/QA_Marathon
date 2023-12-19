@@ -12,19 +12,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: 14
-
-      - name: Install NPM dependencies
-        run: |
-         cd /app/moka_sasaki
-         npm install
-
-      - name: Set Working Directory
-        run: cd /app/moka_sasaki && ls -a
-
       - name: Cypress run
         env:
           SSH_HOST: ${{ secrets.DEV_SSH_HOST }}
@@ -32,13 +19,7 @@ jobs:
           SSH_USER: ${{ secrets.DEV_SSH_USER }}
           SSH_KEY: ${{ secrets.DEV_SSHE_SSH_KEY }}
         run: |
-          # Check if cypress.json file exists
-          if [ -f "cypress.json" ]; then
-            npx cypress run --browser chrome --spec /ci/cypress/e2e/moka_sasaki.*
-          else
-            echo "cypress.json file not found. Please make sure it exists in the project directory."
-            exit 1
-          fi
+          bash /app/deploy.sh moka_sasaki
 
       - name: Deploy to Production
         if: success() # Only deploy to Production if the previous steps were successful
