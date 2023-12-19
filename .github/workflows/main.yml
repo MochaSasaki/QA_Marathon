@@ -18,7 +18,9 @@ jobs:
           node-version: 14
 
       - name: Install NPM dependencies
-        run: npm install
+        run: |
+         cd /app/moka_sasaki
+         npm install
 
       - name: Set Working Directory
         run: cd /app/moka_sasaki && ls -a
