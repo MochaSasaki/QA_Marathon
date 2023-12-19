@@ -34,7 +34,7 @@ jobs:
         run: |
           # Check if cypress.json file exists
           if [ -f "cypress.json" ]; then
-            npx cypress run --browser chrome --spec cypress/e2e/moka_sasaki.*
+            npx cypress run --browser chrome --spec /ci/cypress/e2e/moka_sasaki.*
           else
             echo "cypress.json file not found. Please make sure it exists in the project directory."
             exit 1
