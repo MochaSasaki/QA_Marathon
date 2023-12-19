@@ -29,10 +29,16 @@ jobs:
       - name: Deploy to Production
         id: deploy-production
         uses: invi5H/ssh-action@v1
-        if: success() # Only deploy to Production if the previous steps were successful
+        if: success() 
         env:
           SSH_HOST: ${{ secrets.SSH_HOST }}
           SSH_PORT: ${{ secrets.SSH_PORT }}
           SSH_USER: ${{ secrets.SSH_USER }}
           SSH_KEY: ${{ secrets.SSHE_SSH_KEY }}
-      - run: ssh ${{ steps.deploy-production.outputs.SERVER }} bash /app/deploy.sh moka_sasaki
+      - run: |
+          # スクリプトのパスを設定
+          SCRIPT_PATH="/app/deploy.sh"
+          # ユーザー名を設定
+          USER_NAME="moka_sasaki"
+          # スクリプトをリモートホストで実行
+          ssh ${{ steps.deploy-production.outputs.SERVER }} bash $SCRIPT_PATH $USER_NAME
