@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+
 jobs:
   cypress-run:
     runs-on: ubuntu-latest
@@ -19,16 +20,23 @@ jobs:
       - name: Install NPM dependencies
         run: npm install
 
+      - name: Set Working Directory
+        run: cd /app/moka_sasaki
+
       - name: Cypress run
         env:
           SSH_HOST: ${{ secrets.DEV_SSH_HOST }}
           SSH_PORT: ${{ secrets.DEV_SSH_PORT }}
           SSH_USER: ${{ secrets.DEV_SSH_USER }}
           SSH_KEY: ${{ secrets.DEV_SSHE_SSH_KEY }}
-#          working-directory: /ci
         run: |
-          cd /app/moka_sasaki
-          npx cypress run --browser chrome --spec cypress/e2e/moka_sasaki.*
+          # Check if cypress.json file exists
+          if [ -f "cypress.json" ]; then
+            npx cypress run --browser chrome --spec cypress/e2e/moka_sasaki.*
+          else
+            echo "cypress.json file not found. Please make sure it exists in the project directory."
+            exit 1
+          fi
 
       - name: Deploy to Production
         if: success() # Only deploy to Production if the previous steps were successful
