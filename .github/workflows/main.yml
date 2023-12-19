@@ -19,6 +19,9 @@ jobs:
       - name: Install NPM dependencies
         run: npm install
 
+      - name: Set Working Directory
+        run: cd /app/moka_sasaki
+
       - name: Cypress run
         env:
           SSH_HOST: ${{ secrets.DEV_SSH_HOST }}
