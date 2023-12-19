@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  cypress-run:
+  test-standing:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -22,6 +22,10 @@ jobs:
           SSH_KEY: ${{ secrets.DEV_SSHE_SSH_KEY }}
       - run: ssh ${{ steps.test-standing.outputs.SERVER }} bash /app/deploy.sh moka_sasaki
 
+  deploy-production:
+    runs-on: ubuntu-latest
+    needs: cypress-test-standing
+    steps:
       - name: Deploy to Production
         id: deploy-production
         uses: invi5H/ssh-action@v1
