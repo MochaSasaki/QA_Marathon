@@ -32,4 +32,5 @@ jobs:
           SSH_PORT: ${{ secrets.SSH_PORT }}
           SSH_USER: ${{ secrets.SSH_USER }}
           SSH_KEY: ${{ secrets.SSHE_SSH_KEY }}
-      - run: ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts bash /app/moka_sasaki/deploy.sh moka_sasaki
+#      - run: ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts bash /app/moka_sasaki/deploy.sh moka_sasaki
+      - run: ssh ${{ steps.deploy-production.outputs.SERVER }} bash /app/moka_sasaki/deploy.sh moka_sasaki
