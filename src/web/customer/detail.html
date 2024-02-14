@@ -41,7 +41,7 @@
         </form>
 
         <h2 class="mb-4">案件登録</h2>
-        <form action="submit_case.php" method="POST" class="mt-5">
+        <form action="submit_case.php" method="POST" id="addCaseForm">
             <input type="hidden" name="customer_id" value="<?php echo $_GET['customer_id']; ?>">
             <div class="form-group">
                 <label for="case_name">案件名:</label>
