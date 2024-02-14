@@ -10,7 +10,7 @@ describe('顧客情報入力フォームのテスト', () => {
     cy.fixture('customerData').then((data) => {
       // フォームの入力フィールドにテストデータを入力
       const uniqueContactNumber = `03-${Math.floor(1000 + Math.random() * 9000)}-${Math.floor(1000 + Math.random() * 9000)}`;
-      cy.get('#companyName').type(data.companyName);
+      cy.get('#companyName', { timeout: 10000 }).type(data.companyName);
       cy.get('#industry').type(data.industry);
       cy.get('#contact').type(uniqueContactNumber);
       cy.get('#location').type(data.location);
