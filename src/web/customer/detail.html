@@ -39,6 +39,25 @@
             </div>
             <button type="button" class="btn btn-primary mb-2" id="updateCustomerBtn">顧客情報を更新</button>
         </form>
+
+        <h2>案件登録</h2>
+        <form action="submit_case.php" method="POST">
+            <input type="hidden" name="customer_id" value="<?php echo $_GET['customer_id']; ?>">
+            <label for="case_name">案件名:</label><br>
+            <input type="text" id="case_name" name="case_name" required><br><br>
+            <label for="case_status">案件状況:</label><br>
+            <select id="case_status" name="case_status" required>
+                <option value="新規">新規</option>
+                <option value="交渉中">交渉中</option>
+                <option value="契約締結">契約締結</option>
+                <option value="失注">失注</option>
+            </select><br><br>
+            <label for="expected_revenue">予想収益:</label><br>
+            <input type="number" id="expected_revenue" name="expected_revenue" min="0" step="0.01" required><br><br>
+            <label for="representative">代表者名:</label><br>
+            <input type="text" id="representative" name="representative" required><br><br>
+            <input type="submit" value="登録">
+        </form>
     </div>
 
 
