@@ -35,41 +35,17 @@
     </div>
     <script type="module">
         import config from '../config.js';
-        document.getElementById('customer-form').addEventListener('submit', async function (e) {
-        e.preventDefault();
-        const formData = new FormData(this);
-        let object = {};
-        formData.forEach(function (value, key) {
-            object[key] = value;
-        });
-        let json = JSON.stringify(object);
-
-        try {
-            const response = await fetch(config.apiUrl + '/add-customer', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: json
+        document.getElementById('customer-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            let object = {};
+            formData.forEach(function (value, key) {
+                object[key] = value;
             });
-
-            if (!response.ok) {
-                const data = await response.json();
-                if (data && data.duplicateKeyError) {
-                    alert('連絡先が重複しています。');
-                } else {
-                    alert('エラーが発生しました。');
-                }
-                return;
-            }
-
+            let json = JSON.stringify(object);
             // データをローカルストレージに保存
             localStorage.setItem('customerData', json);
             window.location.href = './add-confirm.html'; // 確認画面に遷移
-        } catch (error) {
-            console.error('エラーが発生しました:', error);
-            alert('エラーが発生しました。');
-        }
     });
     </script>
     <!-- BootstrapのJavaScriptの読み込み -->
