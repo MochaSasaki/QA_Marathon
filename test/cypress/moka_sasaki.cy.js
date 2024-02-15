@@ -1,6 +1,6 @@
 describe('顧客情報入力フォームのテスト', () => {
   it('顧客情報を入力して送信し、成功メッセージを確認する', () => {
-    cy.visit('/moka_sasaki/customer/add.html'); // テスト対象のページにアクセス
+    cy.visit('/moka_sasaki/customer/add.html').waitUntil(() => cy.get('#companyName').should('exist'));
     cy.window().then((win) => {
       // windowのalertをスタブ化し、エイリアスを設定
       cy.stub(win, 'alert').as('alertStub');
@@ -10,7 +10,6 @@ describe('顧客情報入力フォームのテスト', () => {
     cy.fixture('customerData').then((data) => {
       // フォームの入力フィールドにテストデータを入力
       const uniqueContactNumber = `03-${Math.floor(1000 + Math.random() * 9000)}-${Math.floor(1000 + Math.random() * 9000)}`;
-      cy.wait(5000);
       cy.get('#companyName').type(data.companyName);
       cy.get('#industry').type(data.industry);
       cy.get('#contact').type(uniqueContactNumber);
