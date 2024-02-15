@@ -67,8 +67,24 @@
             </div>
             <input type="submit" class="btn btn-primary" value="登録">
         </form>
-    </div>
 
+        <h2 class="mb-4">案件一覧</h2>
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>案件名</th>
+                        <th>状況</th>
+                        <th>予想収益</th>
+                    </tr>
+                </thead>
+                <tbody id="case-list">
+                    <!-- 案件一覧はここに挿入されます -->
+                </tbody>
+            </table>
+        </div>    
+    </div>
+</div>
 
     <script type="module">
         // ExpressサーバのAPIエンドポイントのURL
@@ -101,6 +117,7 @@
                 }
             })
             .catch((error) => console.error(error));
+
         // 列名を日本語に変換する関数
         function mapToJapanese(columnName) {
             const columnMap = {
@@ -114,6 +131,35 @@
             };
             return columnMap[columnName] || columnName;
         }
+
+        // 案件一覧を取得して表示
+        fetch(`${config.apiUrl}/customer/cases?customer_id=${customerId}`)
+            .then((response) => response.json())
+            .then((cases) => {
+                const caseListContainer = document.getElementById("case-list");
+
+                // 案件一覧を表形式で表示
+                cases.forEach((caseItem) => {
+                    const row = document.createElement("tr");
+                    const nameCell = document.createElement("td");
+                    const statusCell = document.createElement("td");
+                    const revenueCell = document.createElement("td");
+                    const representativeCell = document.createElement("td");
+
+                    nameCell.textContent = caseItem.case_name;
+                    statusCell.textContent = caseItem.case_status;
+                    revenueCell.textContent = caseItem.expected_revenue;
+                    representativeCell.textContent = caseItem.representative;
+
+                    row.appendChild(nameCell);
+                    row.appendChild(statusCell);
+                    row.appendChild(revenueCell);
+                    row.appendChild(representativeCell);
+
+                    caseListContainer.appendChild(row);
+                });
+            })
+            .catch((error) => console.error(error));
 
         // 更新フォームに現データを入力
         fetch(`${config.apiUrl}/customer/detail.html?customer_id=${customerId}`)
@@ -176,10 +222,11 @@
                         // 顧客一覧画面にリダイレクト
                         window.location.href = './list.html';
                     })
-                // 削除が失敗した場合の処理
-                console.error(error);
-                // 失敗時は通常通りのエラーメッセージ表示
-                alert("顧客の削除に失敗しました");
+                    .catch((error) => {
+                        // 削除が失敗した場合の処理
+                        console.error(error);
+                        alert("顧客の削除に失敗しました");
+                    });
             }
             console.log("handleDeleteCustomer function called");
         };
