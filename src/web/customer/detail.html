@@ -58,7 +58,8 @@
             </div>
             <div class="form-group">
                 <label for="expected_revenue">予想収益:</label>
-                <input type="number" class="form-control" id="expected_revenue" name="expected_revenue" min="0" step="0.01" required>
+                <input type="number" class="form-control" id="expected_revenue" name="expected_revenue" min="0"
+                    step="0.01" required>
             </div>
             <div class="form-group">
                 <label for="representative">代表者名:</label>
@@ -113,6 +114,18 @@
             };
             return columnMap[columnName] || columnName;
         }
+
+        // 更新フォームに現データを入力
+        fetch(`${config.apiUrl}/customer/detail.html?customer_id=${customerId}`)
+            .then((response) => response.json())
+            .then((customer) => {
+                // 詳細データを各入力フィールドに設定
+                document.getElementById("companyName").value = customer.customer.company_name;
+                document.getElementById("industry").value = customer.customer.industry;
+                document.getElementById("contact").value = customer.customer.contact;
+                document.getElementById("location").value = customer.customer.location;
+            })
+            .catch((error) => console.error(error));
 
         // 顧客更新
         document.getElementById("updateCustomerBtn").addEventListener("click", function () {
