@@ -21,6 +21,10 @@ app.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });
 
+// ************************************//
+// 顧客情報機能
+// ************************************//
+
 // GETエンドポイント: 顧客一覧を取得
 app.get("/customer/list", async (req, res) => {
   try {
@@ -104,6 +108,24 @@ app.delete("/customer/delete", async (req, res) => {
     } else {
       res.json({ success: true, message: "Customer deleted successfully" });
     }
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// ************************************//
+// 案件情報機能
+// ************************************//
+// 案件新規追加
+app.post("/customer/addCase", async (req, res) => {
+  try {
+    const { customer_id, case_name, case_status, expected_revenue, representative } = req.body;
+    const newCase = await pool.query(
+      "INSERT INTO cases (customer_id, case_name, case_status, expected_revenue, representative) VALUES ($1, $2, $3, $4, $5) RETURNING *",
+      [customer_id, case_name, case_status, expected_revenue, representative]
+    );
+    res.json({ success: true, case: newCase.rows[0] });
   } catch (err) {
     console.error(err);
     res.status(500).json({ success: false, error: err.message });
