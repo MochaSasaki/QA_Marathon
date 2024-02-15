@@ -241,10 +241,19 @@
   const formData = new FormData(this); // フォームデータを取得
 
   // Fetchで登録リクエストを送信
-  fetch(`/customer/addCase?customer_id=${customerId}`, {
-    method: 'POST',
-    body: formData
+  fetch(`${config.apiUrl}/customer/addCase`, {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    customer_id: customerId,
+    case_name: '案件名',
+    case_status: '状況',
+    expected_revenue: 1000, // 予想収益
+    representative: '代表者名'
   })
+})
     .then(response => {
       if (!response.ok) {
         throw new Error('Network response was not ok');

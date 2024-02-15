@@ -25,7 +25,7 @@ app.listen(port, () => {
 // 顧客情報機能
 // ************************************//
 
-// GETエンドポイント: 顧客一覧を取得
+// 顧客一覧取得
 app.get("/customer/list", async (req, res) => {
   try {
     const customerData = await pool.query("SELECT * FROM customers");
@@ -39,7 +39,7 @@ app.get("/customer/list", async (req, res) => {
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-// POSTエンドポイント: 顧客を追加
+// 顧客追加
 app.post("/add-customer", async (req, res) => {
   try {
     // Expressアプリケーションのログを確認できるよう,ChatGPTにいわれた一行を追加 by mocha
@@ -56,7 +56,7 @@ app.post("/add-customer", async (req, res) => {
   }
 });
 
-// GETエンドポイント: 顧客詳細を取得
+// 顧客詳細取得
 app.get("/customer/detail.html", async (req, res) => {
   try {
     const customerId = req.query.customer_id;
@@ -74,7 +74,7 @@ app.get("/customer/detail.html", async (req, res) => {
   }
 });
 
-// PUTエンドポイント: 顧客情報を更新
+// 顧客更新
 app.put("/customer/update", async (req, res) => {
   try {
     const customerId = req.query.customer_id;
@@ -96,7 +96,7 @@ app.put("/customer/update", async (req, res) => {
   }
 });
 
-// 顧客削除のエンドポイント
+// 顧客削除
 app.delete("/customer/delete", async (req, res) => {
   try {
     const customerId = req.query.customer_id;
@@ -117,7 +117,7 @@ app.delete("/customer/delete", async (req, res) => {
 // ************************************//
 // 案件情報機能
 // ************************************//
-// 案件新規追加
+// 案件追加
 app.post("/customer/addCase", async (req, res) => {
   try {
     const { customer_id, case_name, case_status, expected_revenue, representative } = req.body;
