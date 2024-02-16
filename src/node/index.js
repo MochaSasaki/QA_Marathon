@@ -74,7 +74,7 @@ app.get("/customer/detail.html", async (req, res) => {
   }
 });
 
-// 顧客更新
+// 顧客情報編集
 app.put("/customer/update", async (req, res) => {
   try {
     const customerId = req.query.customer_id;
@@ -131,6 +131,19 @@ app.post("/customer/addCase", async (req, res) => {
     res.status(500).json({ success: false, error: err.message });
   }
 });
+// 案件一覧取得
+app.get("/customer/cases", async (req, res) => {
+  try {
+    const customerId = req.query.customer_id;
+    const cases = await pool.query("SELECT * FROM cases WHERE customer_id = $1", [customerId]);
+
+    res.json({ success: true, cases: cases.rows });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
 
 // 静的ファイルを提供"静的ファイルがあるディレクトリ名"
 app.use(express.static("public"));

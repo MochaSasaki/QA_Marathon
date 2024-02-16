@@ -36,14 +36,14 @@
     <div class="container mt-5">
         <h1 class="mb-4">［顧客］詳細表示</h1>
         <section>
-            <h2 class="mb-4">登録情報</h2>
+            <h2 class="mb-4">顧客詳細</h2>
             <div class="table table-striped" id="customer-details">
                 <!-- 顧客の詳細情報はここに挿入されます -->
             </div>
             <button class="btn btn-danger" id="deleteCustomerBtn">顧客を削除</button>
         </section><br><br>
         <form id="editCustomerForm">
-            <h2 class="mb-4">編集</h2>
+            <h2 class="mb-4">顧客情報編集</h2>
             <div class="form-group">
                 <label for="companyName">会社名</label>
                 <input type="text" class="form-control" id="companyName" name="companyName" required>
@@ -116,19 +116,19 @@
         // URLからcustomer_idを取得
         const urlParams = new URLSearchParams(window.location.search);
         const customerId = urlParams.get('customer_id');
-
-        // Fetchで詳細データを取得
+        // ************************************//
+        // 顧客情報機能
+        // ************************************//
+        // 顧客詳細取得
         fetch(`${config.apiUrl}/customer/detail.html?customer_id=${customerId}`)
             .then((response) => response.json())
             .then((customer) => {
                 const detailsContainer = document.getElementById("customer-details");
-
-                // 詳細データを表形式で表示
+                // 顧客詳細を表形式で表示
                 for (const [key, value] of Object.entries(customer.customer)) {
                     const row = document.createElement("tr");
                     const keyCell = document.createElement("td");
                     const valueCell = document.createElement("td");
-
                     // 列名を日本語に変更
                     const japaneseColumnName = mapToJapanese(key);
                     keyCell.textContent = japaneseColumnName;
@@ -155,7 +155,82 @@
             return columnMap[columnName] || columnName;
         }
 
-        // 案件一覧を取得して表示
+        // 顧客情報編集フォームに現データを入力
+        fetch(`${config.apiUrl}/customer/detail.html?customer_id=${customerId}`)
+            .then((response) => response.json())
+            .then((customer) => {
+                // 詳細データを各入力フィールドに設定
+                document.getElementById("companyName").value = customer.customer.company_name;
+                document.getElementById("industry").value = customer.customer.industry;
+                document.getElementById("contact").value = customer.customer.contact;
+                document.getElementById("location").value = customer.customer.location;
+            })
+            .catch((error) => console.error(error));
+
+        // 顧客情報編集
+        document.getElementById("updateCustomerBtn").addEventListener("click", function () {
+            const updateData = {
+                companyName: document.getElementById("companyName").value,
+                industry: document.getElementById("industry").value,
+                contact: document.getElementById("contact").value,
+                location: document.getElementById("location").value,
+            };
+
+            // 顧客情報編集後データを送信
+            fetch(`${config.apiUrl}/customer/update?customer_id=${customerId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(updateData),
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    // 顧客情報編集が成功した場合の処理
+                    alert("顧客情報が更新されました");
+                    // 顧客一覧画面にリダイレクト
+                    window.location.href = './list.html';
+                })
+                .catch((error) => {
+                    // 顧客更新が失敗した場合の処理
+                    console.error(error);
+                    // 失敗時は通常通りのエラーメッセージ表示
+                    alert("顧客情報の更新に失敗しました");
+                });
+        });
+
+        // 顧客削除
+        window.handleDeleteCustomer = function () {
+            // 削除していいか確認
+            const confirmation = confirm("顧客を削除してもよろしいですか？");
+
+            if (confirmation) {
+                // 顧客情報削除リクエストを送信
+                fetch(`${config.apiUrl}/customer/delete?customer_id=${customerId}`, {
+                    method: 'DELETE',
+                })
+                    .then((response) => response.json())
+                    .then((data) => {
+                        // 顧客削除が成功した場合の処理
+                        alert("顧客が削除されました");
+                        // 顧客一覧画面にリダイレクト
+                        window.location.href = './list.html';
+                    })
+                    .catch((error) => {
+                        // 顧客削除が失敗した場合の処理
+                        console.error(error);
+                        alert("顧客の削除に失敗しました");
+                    });
+            }
+            console.log("handleDeleteCustomer function called");
+        };
+        // ボタンにイベントリスナーを追加
+        document.getElementById("deleteCustomerBtn").addEventListener("click", handleDeleteCustomer);
+
+        // ************************************//
+        // 案件情報機能
+        // ************************************//
+        // 案件一覧取得・表示
         fetch(`${config.apiUrl}/customer/cases?customer_id=${customerId}`)
             .then((response) => response.json())
             .then((cases) => {
@@ -184,79 +259,6 @@
             })
             .catch((error) => console.error(error));
 
-        // 更新フォームに現データを入力
-        fetch(`${config.apiUrl}/customer/detail.html?customer_id=${customerId}`)
-            .then((response) => response.json())
-            .then((customer) => {
-                // 詳細データを各入力フィールドに設定
-                document.getElementById("companyName").value = customer.customer.company_name;
-                document.getElementById("industry").value = customer.customer.industry;
-                document.getElementById("contact").value = customer.customer.contact;
-                document.getElementById("location").value = customer.customer.location;
-            })
-            .catch((error) => console.error(error));
-
-        // 顧客更新
-        document.getElementById("updateCustomerBtn").addEventListener("click", function () {
-            const updateData = {
-                companyName: document.getElementById("companyName").value,
-                industry: document.getElementById("industry").value,
-                contact: document.getElementById("contact").value,
-                location: document.getElementById("location").value,
-            };
-
-            // Fetchで更新リクエストを送信
-            fetch(`${config.apiUrl}/customer/update?customer_id=${customerId}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(updateData),
-            })
-                .then((response) => response.json())
-                .then((data) => {
-                    // 更新が成功した場合の処理
-                    alert("顧客情報が更新されました");
-                    // 顧客一覧画面にリダイレクト
-                    window.location.href = './list.html';
-                })
-                .catch((error) => {
-                    // 更新が失敗した場合の処理
-                    console.error(error);
-                    // 失敗時は通常通りのエラーメッセージ表示
-                    alert("顧客情報の更新に失敗しました");
-                });
-        });
-
-        // 顧客削除
-        window.handleDeleteCustomer = function () {
-            // 削除していいか確認
-            const confirmation = confirm("顧客を削除してもよろしいですか？");
-
-            if (confirmation) {
-                // Fetchで削除リクエストを送信
-                fetch(`${config.apiUrl}/customer/delete?customer_id=${customerId}`, {
-                    method: 'DELETE',
-                })
-                    .then((response) => response.json())
-                    .then((data) => {
-                        // 削除が成功した場合の処理
-                        alert("顧客が削除されました");
-                        // 顧客一覧画面にリダイレクト
-                        window.location.href = './list.html';
-                    })
-                    .catch((error) => {
-                        // 削除が失敗した場合の処理
-                        console.error(error);
-                        alert("顧客の削除に失敗しました");
-                    });
-            }
-            console.log("handleDeleteCustomer function called");
-        };
-
-        // ボタンにイベントリスナーを追加
-        document.getElementById("deleteCustomerBtn").addEventListener("click", handleDeleteCustomer);
-
         // 案件新規追加
         document.getElementById("addCaseForm").addEventListener("submit", function (event) {
             event.preventDefault(); // デフォルトのフォーム送信をキャンセル
@@ -269,7 +271,7 @@
                 return;
             }
 
-            // Fetchで登録リクエストを送信
+            // 案件新規追加リクエストを送信
             fetch(`${config.apiUrl}/customer/addCase`, {
                 method: 'POST',
                 headers: {
@@ -290,16 +292,16 @@
                     return response.json();
                 })
                 .then(data => {
-                    // 登録が成功した場合の処理
+                    // 案件登録が成功した場合の処理
                     alert('案件が登録されました');
                     // 顧客詳細画面にリダイレクト
                     window.location.href = `customer_detail.html?customer_id=${customerId}`;
                 })
                 .catch(error => {
-                    // 登録が失敗した場合の処理
+                    // 案件登録が失敗した場合の処理
                     console.error('There has been a problem with your fetch operation:', error);
                     alert('案件の登録に失敗しました');
-                    // 登録が失敗した場合もリダイレクト
+                    // 案件登録が失敗した場合もリダイレクト
                     window.location.href = `customer_detail.html?customer_id=${customerId}`;
                 });
         });
