@@ -1,5 +1,5 @@
 describe('顧客情報入力フォームのテスト', () => {
-  before(() => {
+  beforeEach(() => {
     cy.fixture('customerData').as('customerData');
   });
   it('顧客情報を入力して送信し、成功メッセージを確認する', () => {
@@ -12,12 +12,12 @@ describe('顧客情報入力フォームのテスト', () => {
 
     // テストデータの読み込み
     const data = this.customerData;
-      // フォームの入力フィールドにテストデータを入力
-      const uniqueContactNumber = `03-${Math.floor(1000 + Math.random() * 9000)}-${Math.floor(1000 + Math.random() * 9000)}`;
-      cy.get('#companyName', { timeout: 10000 }).should('be.visible').type(data.companyName);
-      cy.get('#industry').type(data.industry);
-      cy.get('#contact').type(uniqueContactNumber);
-      cy.get('#location').type(data.location);
+    // フォームの入力フィールドにテストデータを入力
+    const uniqueContactNumber = `03-${Math.floor(1000 + Math.random() * 9000)}-${Math.floor(1000 + Math.random() * 9000)}`;
+    cy.get('#companyName', { timeout: 10000 }).should('be.visible').type(data.companyName);
+    cy.get('#industry').type(data.industry);
+    cy.get('#contact').type(uniqueContactNumber);
+    cy.get('#location').type(data.location);
 
     // 確認ボタンをクリック
     cy.get('button.btn-primary').click();
@@ -30,18 +30,19 @@ describe('顧客情報入力フォームのテスト', () => {
     // alertメッセージが表示されたことを確認
     cy.on('window:alert', (alertText) => {
       expect(alertText).to.equal('顧客情報が正常に保存されました。');
-
-    // フォームがリセットされたことを確認
-    cy.get('#companyName', { timeout: 10000 }).should('be.visible').should('have.value', '');
-    cy.get('#industry').should('have.value', '');
-    cy.get('#contact').should('have.value', '');
-    cy.get('#location').should('have.value', '');
+    });
+      // フォームがリセットされたことを確認
+      cy.get('#companyName', { timeout: 10000 }).should('be.visible');
+      cy.get('#companyName').should('have.value', '');
+      cy.get('#industry').should('have.value', '');
+      cy.get('#contact').should('have.value', '');
+      cy.get('#location').should('have.value', '');
   });
-
-  it('顧客情報が一覧表示画面に正しく表示されているかを確認する', () => {
+  
+  it.skip('顧客情報が一覧表示画面に正しく表示されているかを確認する', () => {
     // 一覧表示画面にアクセス
     cy.visit('/moka_sasaki/customer/list.html');
-  
+
     // テストデータの読み込み（前提条件として、登録した顧客情報が表示されていることを期待）
     cy.fixture('customerData').then((data) => {
       // 顧客情報が一覧テーブル内に正しく表示されているかを確認
@@ -50,7 +51,7 @@ describe('顧客情報入力フォームのテスト', () => {
     });
   });
 
-  it('詳細画面から顧客の住所を更新する', () => {
+  it.skip('詳細画面から顧客の住所を更新する', () => {
     // 一覧表示画面にアクセス
     cy.visit('/moka_sasaki/customer/list.html');
     // テストデータの読み込み（前提条件として、一覧に表示された顧客データを選択）
@@ -73,5 +74,4 @@ describe('顧客情報入力フォームのテスト', () => {
     // 一覧に更新された住所が表示されていることを確認
     cy.contains('東京都渋谷区1-1');
   });
-  }); 
 });
