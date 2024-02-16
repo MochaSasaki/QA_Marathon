@@ -82,9 +82,9 @@
                     <!-- 案件一覧はここに挿入されます -->
                 </tbody>
             </table>
-        </div>    
+        </div>
     </div>
-</div>
+    </div>
 
     <script type="module">
         // ExpressサーバのAPIエンドポイントのURL
@@ -236,42 +236,42 @@
 
         // 案件新規追加
         document.getElementById("addCaseForm").addEventListener("submit", function (event) {
-  event.preventDefault(); // デフォルトのフォーム送信をキャンセル
+            event.preventDefault(); // デフォルトのフォーム送信をキャンセル
 
-  const formData = new FormData(this); // フォームデータを取得
+            const formData = new FormData(this); // フォームデータを取得
 
-  // Fetchで登録リクエストを送信
-  fetch(`${config.apiUrl}/customer/addCase`, {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json',
-  },
-  body: JSON.stringify({
-    customer_id: customerId,
-    case_name: '案件名',
-    case_status: '状況',
-    expected_revenue: 1000, // 予想収益
-    representative: '代表者名'
-  })
-})
-    .then(response => {
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      return response.json();
-    })
-    .then(data => {
-      // 登録が成功した場合の処理
-      alert('案件が登録されました');
-      // 顧客詳細画面にリダイレクト
-      window.location.href = `customer_detail.html?customer_id=${customerId}`;
-    })
-    .catch(error => {
-      // 登録が失敗した場合の処理
-      console.error('There has been a problem with your fetch operation:', error);
-      alert('案件の登録に失敗しました');
-    });
-});
+            // Fetchで登録リクエストを送信
+            fetch(`${config.apiUrl}/customer/addCase`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    customer_id: customerId,
+                    case_name: '案件名',
+                    case_status: '状況',
+                    expected_revenue: 1000, // 予想収益
+                    representative: '代表者名'
+                })
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // 登録が成功した場合の処理
+                    alert('案件が登録されました');
+                    // 顧客詳細画面にリダイレクト
+                    window.location.href = `customer_detail.html?customer_id=${customerId}`;
+                })
+                .catch(error => {
+                    // 登録が失敗した場合の処理
+                    console.error('There has been a problem with your fetch operation:', error);
+                    alert('案件の登録に失敗しました');
+                });
+        });
     </script>
 
     <!-- BootstrapのJavaScriptと依存関係のリンク -->
