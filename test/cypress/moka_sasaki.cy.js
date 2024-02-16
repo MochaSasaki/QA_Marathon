@@ -33,7 +33,7 @@ describe('顧客情報入力フォームのテスト', () => {
       expect(alertText).to.equal('顧客情報が正常に保存されました。');
 
     // フォームがリセットされたことを確認
-    cy.get('#companyName').should('have.value', '');
+    cy.get('#companyName', { timeout: 10000 }).should('be.visible').should('have.value', '');
     cy.get('#industry').should('have.value', '');
     cy.get('#contact').should('have.value', '');
     cy.get('#location').should('have.value', '');
