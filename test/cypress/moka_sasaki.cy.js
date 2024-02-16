@@ -1,4 +1,7 @@
 describe('顧客情報入力フォームのテスト', () => {
+  before(() => {
+    cy.fixture('customerData').as('customerData');
+  });
   it('顧客情報を入力して送信し、成功メッセージを確認する', () => {
     cy.visit('/moka_sasaki/customer/add.html');
     cy.get('#companyName', { timeout: 10000 }).should('exist');
@@ -28,16 +31,12 @@ describe('顧客情報入力フォームのテスト', () => {
     // alertメッセージが表示されたことを確認
     cy.on('window:alert', (alertText) => {
       expect(alertText).to.equal('顧客情報が正常に保存されました。');
-    // フォームの送信
- //   cy.get('#customer-form').submit();
- //   cy.get('@alertStub').should('have.been.calledOnceWith', '顧客情報が正常に保存されました。');
 
     // フォームがリセットされたことを確認
     cy.get('#companyName').should('have.value', '');
     cy.get('#industry').should('have.value', '');
     cy.get('#contact').should('have.value', '');
     cy.get('#location').should('have.value', '');
-    cy.wait(5000);
   });
 
   it('顧客情報が一覧表示画面に正しく表示されているかを確認する', () => {
