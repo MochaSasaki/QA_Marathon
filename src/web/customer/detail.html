@@ -292,7 +292,7 @@
                     caseListContainer.appendChild(row);
                 } else {
                     // 案件一覧を表形式で表示
-                    cases.forEach((caseItem) => {
+                    Object.values(cases).forEach((caseItem) => {
                         const row = document.createElement("tr");
                         const nameCell = document.createElement("td");
                         const statusCell = document.createElement("td");
