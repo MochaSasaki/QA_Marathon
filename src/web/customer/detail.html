@@ -230,34 +230,6 @@
         // ************************************//
         // 案件情報機能
         // ************************************//
-        // 案件一覧取得・表示
-        fetch(`${config.apiUrl}/customer/cases?customer_id=${customerId}`)
-            .then((response) => response.json())
-            .then((cases) => {
-                const caseListContainer = document.getElementById("case-list");
-
-                // 案件一覧を表形式で表示
-                cases.forEach((caseItem) => {
-                    const row = document.createElement("tr");
-                    const nameCell = document.createElement("td");
-                    const statusCell = document.createElement("td");
-                    const revenueCell = document.createElement("td");
-                    const representativeCell = document.createElement("td");
-
-                    nameCell.textContent = caseItem.case_name;
-                    statusCell.textContent = caseItem.case_status;
-                    revenueCell.textContent = caseItem.expected_revenue;
-                    representativeCell.textContent = caseItem.representative;
-
-                    row.appendChild(nameCell);
-                    row.appendChild(statusCell);
-                    row.appendChild(revenueCell);
-                    row.appendChild(representativeCell);
-
-                    caseListContainer.appendChild(row);
-                });
-            })
-            .catch((error) => console.error(error));
 
         // 案件新規追加
         document.getElementById("addCaseForm").addEventListener("submit", function (event) {
@@ -295,16 +267,45 @@
                     // 案件登録が成功した場合の処理
                     alert('案件が登録されました');
                     // 顧客詳細画面にリダイレクト
-                    window.location.href = `customer_detail.html?customer_id=${customerId}`;
+                    window.location.href = `detail.html?customer_id=${customerId}`;
                 })
                 .catch(error => {
                     // 案件登録が失敗した場合の処理
                     console.error('There has been a problem with your fetch operation:', error);
                     alert('案件の登録に失敗しました');
                     // 案件登録が失敗した場合もリダイレクト
-                    window.location.href = `customer_detail.html?customer_id=${customerId}`;
+                    window.location.href = `detail.html?customer_id=${customerId}`;
                 });
         });
+
+        // 案件一覧取得・表示
+        fetch(`${config.apiUrl}/customer/cases?customer_id=${customerId}`)
+            .then((response) => response.json())
+            .then((cases) => {
+                const caseListContainer = document.getElementById("case-list");
+
+                // 案件一覧を表形式で表示
+                cases.forEach((caseItem) => {
+                    const row = document.createElement("tr");
+                    const nameCell = document.createElement("td");
+                    const statusCell = document.createElement("td");
+                    const revenueCell = document.createElement("td");
+                    const representativeCell = document.createElement("td");
+
+                    nameCell.textContent = caseItem.case_name;
+                    statusCell.textContent = caseItem.case_status;
+                    revenueCell.textContent = caseItem.expected_revenue;
+                    representativeCell.textContent = caseItem.representative;
+
+                    row.appendChild(nameCell);
+                    row.appendChild(statusCell);
+                    row.appendChild(revenueCell);
+                    row.appendChild(representativeCell);
+
+                    caseListContainer.appendChild(row);
+                });
+            })
+            .catch((error) => console.error(error));
     </script>
 
     <!-- BootstrapのJavaScriptと依存関係のリンク -->
