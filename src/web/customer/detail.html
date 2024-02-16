@@ -262,7 +262,13 @@
             event.preventDefault(); // デフォルトのフォーム送信をキャンセル
 
             const formData = new FormData(this); // フォームデータを取得
-
+            const caseStatus = formData.get('case_status');
+            // case_statusが正しい値かどうかを確認
+            if (!['新規', '交渉中', '契約締結', '失注'].includes(caseStatus)) {
+                alert('状況には「新規」「交渉中」「契約締結」「失注」のいずれかを指定してください');
+                return;
+            }
+            
             // Fetchで登録リクエストを送信
             fetch(`${config.apiUrl}/customer/addCase`, {
                 method: 'POST',
