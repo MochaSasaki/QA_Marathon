@@ -26,10 +26,16 @@
     <script type="module">
         import config from '../config.js';
 
-        // ローカルストレージからデータを取得して表示する関数
+        // セッションストレージからデータを取得して表示する関数
         function showConfirmation() {
-            // ローカルストレージから顧客情報を取得
-            const data = JSON.parse(localStorage.getItem('customerData'));
+            // セッションストレージから顧客情報を取得
+            const data = JSON.parse(sessionStorage.getItem('customerData'));
+
+            if (!data) {
+                alert('データが存在しません。');
+                window.location.href = './add.html'; // データが存在しない場合は元の画面に戻る
+                return; // データがない場合は以降の処理を行わない
+            }
 
             // 確認画面に表示
             document.getElementById('companyName-display').innerText += data.companyName;
@@ -37,12 +43,12 @@
             document.getElementById('contact-display').innerText += data.contact;
             document.getElementById('location-display').innerText += data.location;
 
-            return data; // 追加：関数からデータを返す
+            return data; // 関数からデータを返す
         }
         // ページ読み込み時に確認画面を表示
         document.addEventListener('DOMContentLoaded', function () {
             const data = showConfirmation(); // 修正：関数を呼び出してデータを取得
-            // OKボタンクリック時の処理
+            // 登録ボタンクリック時の処理
             document.getElementById('confirmBtn').addEventListener('click', function () {
                 // データをサーバーに送信する処理を追加
                 const formData = {
@@ -80,5 +86,4 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>
-
 </html>
