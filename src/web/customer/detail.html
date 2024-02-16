@@ -268,7 +268,7 @@
                 alert('状況には「新規」「交渉中」「契約締結」「失注」のいずれかを指定してください');
                 return;
             }
-            
+
             // Fetchで登録リクエストを送信
             fetch(`${config.apiUrl}/customer/addCase`, {
                 method: 'POST',
@@ -277,10 +277,10 @@
                 },
                 body: JSON.stringify({
                     customer_id: customerId,
-                    case_name: '案件名',
-                    case_status: '状況',
-                    expected_revenue: 1000, // 予想収益
-                    representative: '代表者名'
+                    case_name: formData.get('case_name'),
+                    case_status: caseStatus,
+                    expected_revenue: parseFloat(formData.get('expected_revenue')),
+                    representative: representative
                 })
             })
                 .then(response => {
@@ -299,6 +299,8 @@
                     // 登録が失敗した場合の処理
                     console.error('There has been a problem with your fetch operation:', error);
                     alert('案件の登録に失敗しました');
+                    // 登録が失敗した場合もリダイレクト
+                    window.location.href = `customer_detail.html?customer_id=${customerId}`;
                 });
         });
     </script>
