@@ -283,27 +283,35 @@
             .then((response) => response.json())
             .then((cases) => {
                 const caseListContainer = document.getElementById("case-list");
-
-                // 案件一覧を表形式で表示
-                cases.forEach((caseItem) => {
+                if (cases.length === 0) {   // 案件が1件もない場合の処理
                     const row = document.createElement("tr");
-                    const nameCell = document.createElement("td");
-                    const statusCell = document.createElement("td");
-                    const revenueCell = document.createElement("td");
-                    const representativeCell = document.createElement("td");
-
-                    nameCell.textContent = caseItem.case_name;
-                    statusCell.textContent = caseItem.case_status;
-                    revenueCell.textContent = caseItem.expected_revenue;
-                    representativeCell.textContent = caseItem.representative;
-
-                    row.appendChild(nameCell);
-                    row.appendChild(statusCell);
-                    row.appendChild(revenueCell);
-                    row.appendChild(representativeCell);
-
+                    const messageCell = document.createElement("td");
+                    messageCell.textContent = "案件情報はまだありません。";
+                    messageCell.colSpan = 3; // メッセージセルを横幅いっぱいにする
+                    row.appendChild(messageCell);
                     caseListContainer.appendChild(row);
-                });
+                } else {
+                    // 案件一覧を表形式で表示
+                    cases.forEach((caseItem) => {
+                        const row = document.createElement("tr");
+                        const nameCell = document.createElement("td");
+                        const statusCell = document.createElement("td");
+                        const revenueCell = document.createElement("td");
+                        const representativeCell = document.createElement("td");
+
+                        nameCell.textContent = caseItem.case_name;
+                        statusCell.textContent = caseItem.case_status;
+                        revenueCell.textContent = caseItem.expected_revenue;
+                        representativeCell.textContent = caseItem.representative;
+
+                        row.appendChild(nameCell);
+                        row.appendChild(statusCell);
+                        row.appendChild(revenueCell);
+                        row.appendChild(representativeCell);
+
+                        caseListContainer.appendChild(row);
+                    });
+                }
             })
             .catch((error) => console.error(error));
     </script>
