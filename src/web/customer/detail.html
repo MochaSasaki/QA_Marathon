@@ -138,6 +138,11 @@
                     row.appendChild(valueCell);
                     detailsContainer.appendChild(row);
                 }
+                // 詳細データを編集フォームに入力
+                document.getElementById("companyName").value = customer.customer.company_name;
+                document.getElementById("industry").value = customer.customer.industry;
+                document.getElementById("contact").value = customer.customer.contact;
+                document.getElementById("location").value = customer.customer.location;
             })
             .catch((error) => console.error(error));
 
@@ -154,18 +159,6 @@
             };
             return columnMap[columnName] || columnName;
         }
-
-        // 顧客情報編集フォームに現データを入力
-        fetch(`${config.apiUrl}/customer/detail.html?customer_id=${customerId}`)
-            .then((response) => response.json())
-            .then((customer) => {
-                // 詳細データを各入力フィールドに設定
-                document.getElementById("companyName").value = customer.customer.company_name;
-                document.getElementById("industry").value = customer.customer.industry;
-                document.getElementById("contact").value = customer.customer.contact;
-                document.getElementById("location").value = customer.customer.location;
-            })
-            .catch((error) => console.error(error));
 
         // 顧客情報編集
         document.getElementById("updateCustomerBtn").addEventListener("click", function () {
