@@ -117,6 +117,20 @@ app.delete("/customer/delete", async (req, res) => {
 // ************************************//
 // 案件情報機能
 // ************************************//
+// 案件一覧取得
+app.get("/customer/cases", async (req, res) => {
+  try {
+    const customerId = req.query.customer_id;
+    const casesData = await pool.query("SELECT * FROM cases WHERE customer_id = $1", [customerId]);
+    const cases = casesData.rows;
+
+    res.json({ success: true, cases: cases });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, error: "Failed to fetch cases." });
+  }
+});
+
 // 案件追加
 app.post("/customer/addCase", async (req, res) => {
   try {
@@ -126,26 +140,6 @@ app.post("/customer/addCase", async (req, res) => {
       [customer_id, case_name, case_status, expected_revenue, representative]
     );
     res.json({ success: true, case: newCase.rows[0] });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ success: false, error: err.message });
-  }
-});
-// 案件一覧取得
-app.get("/customer/cases", async (req, res) => {
-  try {
-    const customerId = req.query.customer_id;
-    const casesData = await pool.query("SELECT * FROM cases WHERE customer_id = $1", [customerId]);
-    const cases = casesData.rows;
-
-    if (!Array.isArray(cases)) {
-      // casesが配列ではない場合にエラーを返す
-      throw new Error("Cases data is not an array");
-    }
-    cases.forEach((singleCase) => {
-      // ケースごとに処理を行う
-    });
-    res.json({ success: true, cases: cases });
   } catch (err) {
     console.error(err);
     res.status(500).json({ success: false, error: err.message });

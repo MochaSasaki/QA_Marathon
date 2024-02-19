@@ -282,12 +282,13 @@
         fetch(`${config.apiUrl}/customer/cases?customer_id=${customerId}`)
             .then((response) => response.json())
             .then((cases) => {
+                console.log(cases); // 取得したデータをコンソールに出力
                 const caseListContainer = document.getElementById("case-list");
                 if (cases.length === 0) {   // 案件が1件もない場合の処理
                     const row = document.createElement("tr");
                     const messageCell = document.createElement("td");
                     messageCell.textContent = "案件情報はまだありません。";
-                    messageCell.colSpan = 3; // メッセージセルを横幅いっぱいにする
+                    messageCell.colSpan = 4; // メッセージセルを横幅いっぱいにする
                     row.appendChild(messageCell);
                     caseListContainer.appendChild(row);
                 } else {
