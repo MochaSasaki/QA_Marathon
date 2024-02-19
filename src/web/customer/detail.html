@@ -234,7 +234,7 @@
             const expected_revenue = parseFloat(formData.get('expected_revenue'));
             const representative = formData.get('representative');
             // case_statusが正しい値かどうかを確認
-            if (!['新規', '交渉中', '契約締結', '失注'].includes(caseStatus)) {
+            if (!['新規', '交渉中', '契約締結', '失注'].includes(case_status)) {
                 alert('状況には「新規」「交渉中」「契約締結」「失注」のいずれかを指定してください');
                 return;
             }
