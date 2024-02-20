@@ -107,7 +107,7 @@
                 </tbody>
             </table>
         </div>
-        <div class="table table-striped" id="case-list">
+        <div id="case-list">
             <!-- 案件一覧はここに挿入されます２ -->
         </div>
     </div>
@@ -282,16 +282,16 @@
         fetch(`${config.apiUrl}/customer/cases?customer_id=${customerId}`)
             .then((response) => response.json())
             .then((cases) => {
-                console.log(cases); // 取得したデータをコンソールに出力
+                const cases = data.cases;
                 const caseListContainer = document.getElementById("case-list");
-                if (cases.length === 0) {   // 案件が1件もない場合の処理
+                if (cases.success && cases.cases.length === 0) {   // 案件が1件もない場合の処理
                     const row = document.createElement("tr");
                     const messageCell = document.createElement("td");
                     messageCell.textContent = "案件情報はまだありません。";
                     messageCell.colSpan = 4; // メッセージセルを横幅いっぱいにする
                     row.appendChild(messageCell);
-                    tbody.appendChild(row);
-                } else {
+                    caseListContainer.appendChild(row);
+                } else if (cases.success && cases.cases.length > 0) {
                     // 案件一覧を表形式で表示
                     cases.forEach((caseItem) => {
                         const row = document.createElement("tr");
@@ -311,8 +311,15 @@
                         row.appendChild(revenueCell);
                         row.appendChild(representativeCell);
 
-                        tbody.appendChild(row);
+                        caseListContainer.appendChild(row);
                     });
+                } else {
+                    const row = document.createElement("tr");
+                    const errorCell = document.createElement("td");
+                    errorCell.textContent = "データの取得に失敗しました。";
+                    errorCell.colSpan = 4;
+                    row.appendChild(errorCell);
+                    caseListContainer.appendChild(row);
                 }
             })
             .catch((error) => console.error(error));
