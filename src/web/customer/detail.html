@@ -282,16 +282,23 @@
         fetch(`${config.apiUrl}/customer/cases?customer_id=${customerId}`)
             .then((response) => response.json())
             .then((data) => {
-                const cases = data.cases;
+                const cases = data;
                 const caseListContainer = document.getElementById("case-list");
-                if (cases.success && cases.cases.length === 0) {   // 案件が1件もない場合の処理
+                if (!cases.success) {
+                    const row = document.createElement("tr");
+                    const errorCell = document.createElement("td");
+                    errorCell.textContent = "データの取得に失敗しました。";
+                    errorCell.colSpan = 4;
+                    row.appendChild(errorCell);
+                    caseListContainer.appendChild(row);
+                } else if (cases.length === 0) {
                     const row = document.createElement("tr");
                     const messageCell = document.createElement("td");
                     messageCell.textContent = "案件情報はまだありません。";
                     messageCell.colSpan = 4; // メッセージセルを横幅いっぱいにする
                     row.appendChild(messageCell);
                     caseListContainer.appendChild(row);
-                } else if (cases.success && cases.cases.length > 0) {
+                } else {
                     // 案件一覧を表形式で表示
                     cases.forEach((caseItem) => {
                         const row = document.createElement("tr");
@@ -313,13 +320,6 @@
 
                         caseListContainer.appendChild(row);
                     });
-                } else {
-                    const row = document.createElement("tr");
-                    const errorCell = document.createElement("td");
-                    errorCell.textContent = "データの取得に失敗しました。";
-                    errorCell.colSpan = 4;
-                    row.appendChild(errorCell);
-                    caseListContainer.appendChild(row);
                 }
             })
             .catch((error) => console.error(error));
