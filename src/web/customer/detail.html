@@ -290,7 +290,7 @@
                     messageCell.textContent = "案件情報はまだありません。";
                     messageCell.colSpan = 4; // メッセージセルを横幅いっぱいにする
                     row.appendChild(messageCell);
-                    caseListContainer.appendChild(row);
+                    tbody.appendChild(row);
                 } else {
                     // 案件一覧を表形式で表示
                     cases.forEach((caseItem) => {
@@ -306,17 +306,12 @@
                         revenueCell.textContent = caseItem.expected_revenue || '';
                         representativeCell.textContent = caseItem.representative || '';
 
-                        nameCell.textContent = caseItem.case_name;
-                        statusCell.textContent = caseItem.case_status;
-                        revenueCell.textContent = caseItem.expected_revenue;
-                        representativeCell.textContent = caseItem.representative;
-
                         row.appendChild(nameCell);
                         row.appendChild(statusCell);
                         row.appendChild(revenueCell);
                         row.appendChild(representativeCell);
 
-                        caseListContainer.appendChild(row);
+                        tbody.appendChild(row);
                     });
                 }
             })
