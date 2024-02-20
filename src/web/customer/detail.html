@@ -99,12 +99,16 @@
                         <th>案件名</th>
                         <th>状況</th>
                         <th>予想収益</th>
+                        <th>代表者名</th>
                     </tr>
                 </thead>
                 <tbody id="case-list">
-                    <!-- 案件一覧はここに挿入されます -->
+                    <!-- 案件一覧はここに挿入されます１ -->
                 </tbody>
             </table>
+        </div>
+        <div class="table table-striped" id="case-list">
+            <!-- 案件一覧はここに挿入されます２ -->
         </div>
     </div>
     </div>
@@ -289,12 +293,18 @@
                     caseListContainer.appendChild(row);
                 } else {
                     // 案件一覧を表形式で表示
-                    Object.values(cases).forEach((caseItem) => {
+                    cases.forEach((caseItem) => {
                         const row = document.createElement("tr");
                         const nameCell = document.createElement("td");
                         const statusCell = document.createElement("td");
                         const revenueCell = document.createElement("td");
                         const representativeCell = document.createElement("td");
+
+                        // 空のカラムがあってもエラーが出ないように、存在するプロパティのみセットする
+                        nameCell.textContent = caseItem.case_name || '';
+                        statusCell.textContent = caseItem.case_status || '';
+                        revenueCell.textContent = caseItem.expected_revenue || '';
+                        representativeCell.textContent = caseItem.representative || '';
 
                         nameCell.textContent = caseItem.case_name;
                         statusCell.textContent = caseItem.case_status;
