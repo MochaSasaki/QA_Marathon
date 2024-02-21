@@ -97,10 +97,8 @@
             <table class="table table-bordered">
                 <thead class="thead-dark">
                     <tr>
-                        <th scope="col">案件名</th>
                         <th scope="col">状況</th>
-                        <th scope="col">予想収益</th>
-                        <th scope="col">代表者名</th>
+                        <th scope="col">案件名</th>
                     </tr>
                 </thead>
                 <tbody id="case-list">
@@ -298,19 +296,13 @@
                         const row = document.createElement("tr");
                         const nameCell = document.createElement("td");
                         const statusCell = document.createElement("td");
-                        const revenueCell = document.createElement("td");
-                        const representativeCell = document.createElement("td");
 
                         // 空のカラムがあってもエラーが出ないように、存在するプロパティのみセットする
                         nameCell.textContent = caseItem.case_name || '';
                         statusCell.textContent = caseItem.case_status || '';
-                        revenueCell.textContent = caseItem.expected_revenue || '';
-                        representativeCell.textContent = caseItem.representative || '';
 
                         row.appendChild(nameCell);
                         row.appendChild(statusCell);
-                        row.appendChild(revenueCell);
-                        row.appendChild(representativeCell);
 
                         caseListContainer.appendChild(row);
                     });
