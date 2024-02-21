@@ -94,21 +94,18 @@
         <h2 class="mb-4">案件一覧</h2>
         <div class="table-responsive">
             <table class="table table-bordered">
-                <thead>
+                <thead class="thead-dark">
                     <tr>
-                        <th>案件名</th>
-                        <th>状況</th>
-                        <th>予想収益</th>
-                        <th>代表者名</th>
+                        <th scope="col">案件名</th>
+                        <th scope="col">状況</th>
+                        <th scope="col">予想収益</th>
+                        <th scope="col">代表者名</th>
                     </tr>
                 </thead>
                 <tbody id="case-list">
-                    <!-- 案件一覧はここに挿入されます１ -->
+                    <!-- 案件一覧はここに挿入されます -->
                 </tbody>
             </table>
-        </div>
-        <div id="case-list">
-            <!-- 案件一覧はここに挿入されます２ -->
         </div>
     </div>
     </div>
@@ -227,7 +224,6 @@
         // ************************************//
         // 案件情報機能
         // ************************************//
-
         // 案件新規追加
         document.getElementById("addCaseForm").addEventListener("submit", function (event) {
             event.preventDefault(); // デフォルトのフォーム送信をキャンセル
@@ -278,11 +274,10 @@
                 });
         });
 
-        // 案件一覧取得・表示
+        // 案件一覧取得
         fetch(`${config.apiUrl}/customer/cases?customer_id=${customerId}`)
             .then((response) => response.json())
-            .then((data) => {
-                const cases = data;
+            .then((cases) => {
                 const caseListContainer = document.getElementById("case-list");
                 if (!cases.success) {
                     const row = document.createElement("tr");
