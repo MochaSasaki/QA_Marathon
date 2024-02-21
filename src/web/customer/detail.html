@@ -277,16 +277,14 @@
         // 案件一覧取得
         fetch(`${config.apiUrl}/customer/cases?customer_id=${customerId}`)
             .then((response) => response.json())
-            .then((cases) => {
+            .then((data) => {
+                if (!data || !data.cases || !Array.isArray(data.cases)) {
+                    throw new Error('Invalid data format');
+                }
+
+                const cases = data.cases;
                 const caseListContainer = document.getElementById("case-list");
-                if (!cases.success) {
-                    const row = document.createElement("tr");
-                    const errorCell = document.createElement("td");
-                    errorCell.textContent = "データの取得に失敗しました。";
-                    errorCell.colSpan = 4;
-                    row.appendChild(errorCell);
-                    caseListContainer.appendChild(row);
-                } else if (cases.length === 0) {
+                if (cases.length === 0) {
                     const row = document.createElement("tr");
                     const messageCell = document.createElement("td");
                     messageCell.textContent = "案件情報はまだありません。";
