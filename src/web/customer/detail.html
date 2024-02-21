@@ -275,8 +275,8 @@
                         const statusCell = document.createElement("td");
 
                         // 空のカラムがあってもエラーが出ないように、存在するプロパティのみセットする
-                        nameCell.textContent = caseItem.case_name || '';
-                        statusCell.textContent = caseItem.case_status || '';
+                        nameCell.textContent = caseItem.case_name || ' - ';
+                        statusCell.textContent = caseItem.case_status || ' - ';
 
                         row.appendChild(nameCell);
                         row.appendChild(statusCell);
