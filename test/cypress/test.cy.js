@@ -50,7 +50,7 @@ describe('顧客情報入力フォームのテスト', () => {
       cy.contains(data.companyName).click();
     });
     // 顧客詳細画面にアクセスしたことを確認
-    cy.url().should('include', '/moka_sasaki/customer/detail.html');
+    cy.url().should('include', '/moka_sasaki/customer/detail');
     // 住所の更新
     cy.get('#location').clear().type('東京都渋谷区1-1');
     // 更新ボタンをクリック

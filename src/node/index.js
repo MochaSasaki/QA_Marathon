@@ -40,10 +40,10 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 // 顧客追加
-app.post("/add-customer", async (req, res) => {
+app.post("/customer/add", async (req, res) => {
   try {
     // Expressアプリケーションのログを確認できるよう,ChatGPTにいわれた一行を追加 by mocha
-    console.log("Received POST request to /add-customer"); // Uncommented this line
+    console.log("Received POST request to /customer/add"); // Uncommented this line
     const { companyName, industry, contact, location } = req.body;
     const newCustomer = await pool.query(
       "INSERT INTO customers (company_name, industry, contact, location) VALUES ($1, $2, $3, $4) RETURNING *",
@@ -57,7 +57,7 @@ app.post("/add-customer", async (req, res) => {
 });
 
 // 顧客詳細取得
-app.get("/customer/detail.html", async (req, res) => {
+app.get("/customer/detail", async (req, res) => {
   try {
     const customerId = req.query.customer_id;
     const customerDetail = await pool.query("SELECT * FROM customers WHERE customer_id = $1", [customerId]);
@@ -118,7 +118,7 @@ app.delete("/customer/delete", async (req, res) => {
 // 案件情報機能
 // ************************************//
 // 案件追加
-app.post("/customer/addCase", async (req, res) => {
+app.post("/case/add", async (req, res) => {
   try {
     const { customer_id, case_name, case_status, expected_revenue, representative } = req.body;
     const newCase = await pool.query(
