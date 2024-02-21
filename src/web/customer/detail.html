@@ -251,7 +251,7 @@
         });
 
         // 案件一覧取得
-        fetch(`${config.apiUrl}/customer/cases?customer_id=${customerId}`)
+        fetch(`${config.apiUrl}/case/detail?customer_id=${customerId}`)
             .then((response) => response.json())
             .then((data) => {
                 if (!data || !data.cases || !Array.isArray(data.cases)) {

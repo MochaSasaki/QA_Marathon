@@ -42,8 +42,7 @@ app.use(express.json());
 // 顧客追加
 app.post("/customer/add", async (req, res) => {
   try {
-    // Expressアプリケーションのログを確認できるよう,ChatGPTにいわれた一行を追加 by mocha
-    console.log("Received POST request to /customer/add"); // Uncommented this line
+    console.log("Received POST request to /customer/add");
     const { companyName, industry, contact, location } = req.body;
     const newCustomer = await pool.query(
       "INSERT INTO customers (company_name, industry, contact, location) VALUES ($1, $2, $3, $4) RETURNING *",
@@ -59,6 +58,7 @@ app.post("/customer/add", async (req, res) => {
 // 顧客詳細取得
 app.get("/customer/detail", async (req, res) => {
   try {
+    console.log("Received POST request to /customer/detail");
     const customerId = req.query.customer_id;
     const customerDetail = await pool.query("SELECT * FROM customers WHERE customer_id = $1", [customerId]);
 
@@ -77,6 +77,7 @@ app.get("/customer/detail", async (req, res) => {
 // 顧客情報編集
 app.put("/customer/update", async (req, res) => {
   try {
+    console.log("Received POST request to /customer/update");
     const customerId = req.query.customer_id;
     const { companyName, industry, contact, location } = req.body;
 
@@ -99,6 +100,7 @@ app.put("/customer/update", async (req, res) => {
 // 顧客削除
 app.delete("/customer/delete", async (req, res) => {
   try {
+    console.log("Received POST request to /customer/delete");
     const customerId = req.query.customer_id;
     // 顧客を削除するクエリを実行
     const deleteResult = await pool.query("DELETE FROM customers WHERE customer_id = $1", [customerId]);
@@ -120,6 +122,7 @@ app.delete("/customer/delete", async (req, res) => {
 // 案件追加
 app.post("/case/add", async (req, res) => {
   try {
+    console.log("Received POST request to /case/add");
     const { customer_id, case_name, case_status, expected_revenue, representative } = req.body;
     const newCase = await pool.query(
       "INSERT INTO cases (customer_id, case_name, case_status, expected_revenue, representative) VALUES ($1, $2, $3, $4, $5) RETURNING *",
@@ -132,9 +135,10 @@ app.post("/case/add", async (req, res) => {
   }
 });
 
-// 案件一覧取得
-app.get("/customer/cases", async (req, res) => {
+// 案件詳細取得（案件一覧でも使用）
+app.get("/case/detail", async (req, res) => {
   try {
+    console.log("Received POST request to /case/detail");
     const customerId = req.query.customer_id;
     const casesData = await pool.query("SELECT * FROM cases WHERE customer_id = $1", [customerId]);
     const cases = casesData.rows;

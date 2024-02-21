@@ -32,7 +32,7 @@
         const caseId = urlParams.get('case_id');
 
         // 案件詳細取得
-        fetch(`${config.apiUrl}/customer/cases?customer_id=${customerId}&case_id=${caseId}`)
+        fetch(`${config.apiUrl}/case/detail?customer_id=${customerId}&case_id=${caseId}`)
             .then((response) => response.json())
             .then((caseDetail) => {
                 const detailsContainer = document.getElementById("case-details");
