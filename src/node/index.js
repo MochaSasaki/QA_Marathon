@@ -26,7 +26,7 @@ app.listen(port, () => {
 // ************************************//
 
 // 顧客一覧取得
-app.get("/customer/list", async (req, res) => {
+app.get("/customers", async (req, res) => {
   try {
     const customerData = await pool.query("SELECT * FROM customers");
     res.send(customerData.rows);
@@ -40,9 +40,9 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 // 顧客追加
-app.post("/customer/add", async (req, res) => {
+app.post("/add-customer", async (req, res) => {
   try {
-    console.log("Received POST request to /customer/add");
+    console.log("Received POST request to /add-customer");
     const { companyName, industry, contact, location } = req.body;
     const newCustomer = await pool.query(
       "INSERT INTO customers (company_name, industry, contact, location) VALUES ($1, $2, $3, $4) RETURNING *",
@@ -56,10 +56,10 @@ app.post("/customer/add", async (req, res) => {
 });
 
 // 顧客詳細取得
-app.get("/customer/detail", async (req, res) => {
+app.get("/customer/:customerId", async (req, res) => {
   try {
-    console.log("Received POST request to /customer/detail");
-    const customerId = req.query.customer_id;
+    console.log("Received POST request to /customer");
+    const customerId = req.params.customer_id;
     const customerDetail = await pool.query("SELECT * FROM customers WHERE customer_id = $1", [customerId]);
 
     if (customerDetail.rows.length === 0) {
@@ -75,10 +75,10 @@ app.get("/customer/detail", async (req, res) => {
 });
 
 // 顧客情報編集
-app.put("/customer/update", async (req, res) => {
+app.put("/update-customer/:customerId", async (req, res) => {
   try {
-    console.log("Received POST request to /customer/update");
-    const customerId = req.query.customer_id;
+    console.log("Received POST request to /update-customer");
+    const customerId = req.params.customer_id;
     const { companyName, industry, contact, location } = req.body;
 
     const updateResult = await pool.query(
@@ -98,10 +98,10 @@ app.put("/customer/update", async (req, res) => {
 });
 
 // 顧客削除
-app.delete("/customer/delete", async (req, res) => {
+app.delete("/delete-customer/:customerId", async (req, res) => {
   try {
-    console.log("Received POST request to /customer/delete");
-    const customerId = req.query.customer_id;
+    console.log("Received POST request to /delete-customer");
+    const customerId = req.params.customer_id;
     // 顧客を削除するクエリを実行
     const deleteResult = await pool.query("DELETE FROM customers WHERE customer_id = $1", [customerId]);
 
@@ -120,9 +120,9 @@ app.delete("/customer/delete", async (req, res) => {
 // 案件情報機能
 // ************************************//
 // 案件追加
-app.post("/case/add", async (req, res) => {
+app.post("/add-case", async (req, res) => {
   try {
-    console.log("Received POST request to /case/add");
+    console.log("Received POST request to /add-case");
     const { customer_id, case_name, case_status, expected_revenue, representative } = req.body;
     const newCase = await pool.query(
       "INSERT INTO cases (customer_id, case_name, case_status, expected_revenue, representative) VALUES ($1, $2, $3, $4, $5) RETURNING *",
@@ -135,11 +135,28 @@ app.post("/case/add", async (req, res) => {
   }
 });
 
-// 案件詳細取得（案件一覧でも使用）
-app.get("/case/detail", async (req, res) => {
+// 特定の顧客IDに対する案件詳細取得
+app.get("/cases/:customerId", async (req, res) => {
   try {
-    console.log("Received POST request to /case/detail");
-    const customerId = req.query.customer_id;
+    console.log("Received POST request to /cases/:customerId");
+    const customerId = req.params.customer_id;
+    const casesData = await pool.query("SELECT * FROM cases WHERE customer_id = $1", [customerId]);
+    const cases = casesData.rows;
+
+    res.json({ success: true, cases: cases });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, error: "Failed to fetch cases." });
+  }
+});
+
+// 特定の顧客IDと案件IDに対する案件詳細取得
+app.get("/cases/:customerId/:caseId", async (req, res) => {
+  try {
+    console.log("Received POST request to /cases/:customerId/:caseId");
+
+  // 要編集
+    const customerId = req.params.customer_id;
     const casesData = await pool.query("SELECT * FROM cases WHERE customer_id = $1", [customerId]);
     const cases = casesData.rows;
 
