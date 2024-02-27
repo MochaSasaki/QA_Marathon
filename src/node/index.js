@@ -155,13 +155,11 @@ app.get("/cases/:customerId", async (req, res) => {
 app.get("/cases/:customerId/:caseId", async (req, res) => {
   try {
     console.log("Received GET request to /cases/:customerId/:caseId");
+    const caseId = req.params.caseId;
+    const casesData = await pool.query("SELECT * FROM cases WHERE case_id = $1", [caseId]);
+    const caseDetail = caseData.rows[0];
 
-  // 要編集
-    const customerId = req.params.customerId;
-    const casesData = await pool.query("SELECT * FROM cases WHERE customer_id = $1", [customerId]);
-    const cases = casesData.rows;
-
-    res.json({ success: true, cases: cases });
+    res.json({ success: true, case: caseDetail });
   } catch (err) {
     console.error(err);
     res.status(500).json({ success: false, error: "Failed to fetch cases." });
