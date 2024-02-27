@@ -28,6 +28,7 @@ app.listen(port, () => {
 // 顧客一覧取得
 app.get("/customers", async (req, res) => {
   try {
+    console.log("Received GET request to /customers");
     const customerData = await pool.query("SELECT * FROM customers");
     res.send(customerData.rows);
   } catch (err) {
@@ -58,7 +59,7 @@ app.post("/add-customer", async (req, res) => {
 // 顧客詳細取得
 app.get("/customer/:customerId", async (req, res) => {
   try {
-    console.log("Received POST request to /customer");
+    console.log("Received GET request to /customer");
     const customerId = req.params.customerId;
     const customerDetail = await pool.query("SELECT * FROM customers WHERE customer_id = $1", [customerId]);
 
@@ -77,7 +78,7 @@ app.get("/customer/:customerId", async (req, res) => {
 // 顧客情報編集
 app.put("/update-customer/:customerId", async (req, res) => {
   try {
-    console.log("Received POST request to /update-customer");
+    console.log("Received PUT request to /update-customer");
     const customerId = req.params.customerId;
     const { companyName, industry, contact, location } = req.body;
 
@@ -100,7 +101,7 @@ app.put("/update-customer/:customerId", async (req, res) => {
 // 顧客削除
 app.delete("/delete-customer/:customerId", async (req, res) => {
   try {
-    console.log("Received POST request to /delete-customer");
+    console.log("Received DELETE request to /delete-customer");
     const customerId = req.params.customerId;
     // 顧客を削除するクエリを実行
     const deleteResult = await pool.query("DELETE FROM customers WHERE customer_id = $1", [customerId]);
@@ -138,7 +139,7 @@ app.post("/add-case", async (req, res) => {
 // 特定の顧客IDに対する案件詳細取得
 app.get("/cases/:customerId", async (req, res) => {
   try {
-    console.log("Received POST request to /cases/:customerId");
+    console.log("Received GET request to /cases/:customerId");
     const customerId = req.params.customerId;
     const casesData = await pool.query("SELECT * FROM cases WHERE customer_id = $1", [customerId]);
     const cases = casesData.rows;
@@ -153,7 +154,7 @@ app.get("/cases/:customerId", async (req, res) => {
 // 特定の顧客IDと案件IDに対する案件詳細取得
 app.get("/cases/:customerId/:caseId", async (req, res) => {
   try {
-    console.log("Received POST request to /cases/:customerId/:caseId");
+    console.log("Received GET request to /cases/:customerId/:caseId");
 
   // 要編集
     const customerId = req.params.customerId;
