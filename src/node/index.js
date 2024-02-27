@@ -156,7 +156,7 @@ app.get("/cases/:customerId/:caseId", async (req, res) => {
   try {
     console.log("Received GET request to /cases/:customerId/:caseId");
     const caseId = req.params.caseId;
-    const casesData = await pool.query("SELECT * FROM cases WHERE case_id = $1", [caseId]);
+    const caseData = await pool.query("SELECT * FROM cases WHERE case_id = $1", [caseId]);
     const caseDetail = caseData.rows[0];
 
     res.json({ success: true, case: caseDetail });
