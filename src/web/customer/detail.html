@@ -254,41 +254,58 @@
         fetch(`${config.apiUrl}/cases/${customerId}`)
             .then((response) => response.json())
             .then((data) => {
-                if (!data || !data.cases || !Array.isArray(data.cases)) {
-                    throw new Error('Invalid data format');
-                }
+                const list = document.getElementById("case-list");
+                data.forEach((caseItem, index) => {
+                    const row = list.insertRow();
+                    const cell1 = row.insertCell(0);
+                    const cell2 = row.insertCell(1);
 
-                const cases = data.cases;
-                const caseListContainer = document.getElementById("case-list");
-                if (cases.length === 0) {
-                    const row = document.createElement("tr");
-                    const messageCell = document.createElement("td");
-                    messageCell.textContent = "案件情報はまだありません。";
-                    messageCell.colSpan = 4; // メッセージセルを横幅いっぱいにする
-                    row.appendChild(messageCell);
-                    caseListContainer.appendChild(row);
-                } else {
-                    // 案件一覧を表形式で表示
-                    cases.forEach((caseItem) => {
-                        const row = document.createElement("tr");
-                        const nameCell = document.createElement("td");
-                        const statusCell = document.createElement("td");
+                    cell1.textContent = caseItem.case_status;
+                    cell2.textContent = caseItem.case_name;
 
-                        // 空のカラムがあってもエラーが出ないように、存在するプロパティのみセットする
-                        nameCell.textContent = caseItem.case_name || ' - ';
-                        statusCell.textContent = caseItem.case_status || ' - ';
+                    const detailLink = document.createElement("a");
+                    detailLink.href = `./detail.html?customer_id=${customerId}&case_id=${caseItem.case_id}`;
+                    detailLink.textContent = "詳細";
 
-                        row.appendChild(nameCell);
-                        row.appendChild(statusCell);
+                    const cell3 = row.insertCell(2);
+                    cell3.appendChild(detailLink);
+                });
+                // if (!data || !data.cases || !Array.isArray(data.cases)) {
+                //     throw new Error('Invalid data format');
+                // }
 
-                        caseListContainer.appendChild(row);
+                // const cases = data.cases;
+                // const caseListContainer = document.getElementById("case-list");
 
-                        // 詳細画面へのリンク
-                        const detailLink = document.createElement("a");
-                        detailLink.href = `./detail.html?customer_id=${customer.customer_id}&case_id=${caseItem.case_id}`;
-                        detailLink.textContent = customer.company_name;
-                    });
-                }
+                // if (cases.length === 0) {
+                //     const row = document.createElement("tr");
+                //     const messageCell = document.createElement("td");
+                //     messageCell.textContent = "案件情報はまだありません。";
+                //     messageCell.colSpan = 4; // メッセージセルを横幅いっぱいにする
+                //     row.appendChild(messageCell);
+                //     caseListContainer.appendChild(row);
+                // } else {
+                //     // 案件一覧を表形式で表示
+                //     cases.forEach((caseItem) => {
+                //         // 詳細画面へのリンク
+                //         const detailLink = document.createElement("a");
+                //         detailLink.href = `./detail.html?customer_id=${customer.customer_id}&case_id=${caseItem.case_id}`;
+                //         detailLink.textContent = customer.company_name;
+
+                //         const row = document.createElement("tr");
+                //         const nameCell = document.createElement("td");
+                //         const statusCell = document.createElement("td");
+
+                //         // 空のカラムがあってもエラーが出ないように、存在するプロパティのみセットする
+                //         nameCell.textContent = caseItem.case_name || ' - ';
+                //         statusCell.textContent = caseItem.case_status || ' - ';
+
+                //         row.appendChild(nameCell);
+                //         row.appendChild(statusCell);
+
+                //         caseListContainer.appendChild(row);
+                //     });
+                // }
             })
             .catch((error) => console.error(error));
     </script>
