@@ -36,6 +36,11 @@
       .then((data) => {
         const list = document.getElementById("customer-list");
         data.forEach((customer, index) => {
+          // 詳細画面へのリンク
+          const detailLink = document.createElement("a");
+          detailLink.href = `./detail.html?customer_id=${customer.customer_id}`;
+          detailLink.textContent = customer.company_name;
+
           const row = list.insertRow();
           const cell1 = row.insertCell(0);
           const cell2 = row.insertCell(1);
@@ -44,11 +49,6 @@
           cell1.textContent = index + 1;
           cell2.appendChild(detailLink);
           cell3.textContent = customer.contact;
-          
-          // 詳細画面へのリンク
-          const detailLink = document.createElement("a");
-          detailLink.href = `./detail.html?customer_id=${customer.customer_id}`;
-          detailLink.textContent = customer.company_name;
         });
       })
       .catch((error) => console.error(error));
