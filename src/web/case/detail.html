@@ -17,17 +17,6 @@
         <section>
             <h2 class="mb-4">案件詳細情報</h2>
             <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th scope="col">案件ID</th>
-                        <th scope="col">案件名</th>
-                        <th scope="col">状況</th>
-                        <th scope="col">予想収益</th>
-                        <th scope="col">代表者名</th>
-                        <th scope="col">作成日時</th>
-                        <th scope="col">更新日時</th>
-                    </tr>
-                </thead>
                 <tbody id="case-details">
                     <!-- 案件の詳細情報はここに挿入されます -->
                 </tbody>
@@ -54,6 +43,38 @@
                     const row = document.createElement("tr");
                     const keyCell = document.createElement("td");
                     const valueCell = document.createElement("td");
+
+                    // カラム名を日本語に変更
+                    let japaneseKey = "";
+                    switch (key) {
+                        case "case_id":
+                            japaneseKey = "案件ID";
+                            break;
+                        case "case_name":
+                            japaneseKey = "案件名";
+                            break;
+                        case "case_status":
+                            japaneseKey = "案件状況";
+                            break;
+                        case "expected_revenue":
+                            japaneseKey = "予想収益";
+                            break;
+                        case "representative":
+                            japaneseKey = "代表者名";
+                            break;
+                        case "customer_id":
+                            japaneseKey = "顧客ID";
+                            break;
+                        case "created_date":
+                            japaneseKey = "作成日時";
+                            break;
+                        case "updated_date":
+                            japaneseKey = "更新日時";
+                            break;
+                        default:
+                            japaneseKey = key;
+                    }
+
                     keyCell.textContent = key;
                     valueCell.textContent = value;
 
